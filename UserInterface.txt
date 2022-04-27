@@ -1,0 +1,23 @@
+create countries{
+    make an empty array 
+    in a loop, update a variable with the next line of data, add that variable to the array
+    eventually u have an array full of these countries
+}
+create covidrecords with countries{
+    do same as countries with added pcountry being countryArrayList[i] in your loop
+
+}
+
+
+for continent selection{
+    so theyve picked their continent
+    then for either of the first 3 options ("totals"){
+        for recordArrayList.length
+            if recordArrayList[i].getContinent.equals(user inputted continent)
+                totalValueHolder += recordArrayList[i].getTotalofthing
+
+        print totalValueHolder
+    
+
+    }
+}
