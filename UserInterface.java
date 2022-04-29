@@ -7,6 +7,13 @@ public class UserInterface{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
 
+
+
+        CovidRecord[] covidRecordArray = readFile("jrc1.csv");
+        System.out.println(covidRecordArray);
+
+
+
         System.out.println("Welcome to the JRC COVID-19 Analysis Program. There are a total of ‘XYZ’ records loaded. Please make a selection from the Menu below tochoose which area (or date) to analyse: ");
         System.out.println("> 1 = All countries");
         System.out.println("> 2 = Countries in South America");
@@ -76,13 +83,14 @@ public class UserInterface{
         sc.close();
     }
 
-    public static int readFileForNum(String pFileName, int pInput){
+    public static CovidRecord[] readFile(String pFileName){
         FileInputStream fileStream = null;
         InputStreamReader rdr;
         BufferedReader bufRdr;
         int lineNum;
         String line;
         int totalReturnVal = 0;
+        CovidRecord[] covidRecordArray = new CovidRecord[1];
 
         try{
             fileStream = new FileInputStream(pFileName);
@@ -90,44 +98,36 @@ public class UserInterface{
             bufRdr = new BufferedReader(rdr);
             lineNum = 0;
             line = bufRdr.readLine();
-            boolean check = false;
-            while(check == false){
-                int cumVal = 0;
+            while(line != null){
                 lineNum++;
                 line = bufRdr.readLine();
-                if(line != null){
-                    String[] returnVal = processLine(line);
-                    switch(pInput){
-                        case 1:
-                            if(!(returnVal[7].isEmpty())){
-                                cumVal = Integer.parseInt(returnVal[6]);
-                            }
-                        break;
-                        case 2:
-                            if(!(returnVal[7].isEmpty())){
-                                cumVal = Integer.parseInt(returnVal[7]);
-                            }
-                        break;
-                        case 3:
-                            if(!(returnVal[8].isEmpty())){
-                                cumVal = Integer.parseInt(returnVal[8]);
-                            }
-                        break;
-                        case 4:
-                            if(!(returnVal[9].isEmpty())){
-                                cumVal = Integer.parseInt(returnVal[9]);
-                            }
-                        break;
+            }
+            fileStream.close();
+
+            covidRecordArray = new CovidRecord[lineNum];
+
+            fileStream = new FileInputStream(pFileName);
+            rdr = new InputStreamReader(fileStream);
+            bufRdr = new BufferedReader(rdr);
+            line = bufRdr.readLine();
+            for(int i=0; i < lineNum; i++){
+                //lineNum++;
+                line = bufRdr.readLine();
+                String [] stringArray = processLine(line);
+                for(i = 0; i<stringArray.length; i++){
+                    if(stringArray[i].isEmpty()){
+                        stringArray[i] = "0";
                     }
-                    //int cumPosVal = Integer.parseInt(returnVal[6]);
-                    totalReturnVal += cumVal;
-                }
-                else{
-                    check = true;
                 }
 
+                Country country = new Country(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5]));
+                CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
+                
+                covidRecordArray[i] = covidRecord;
+
+
+
             }
-                fileStream.close();
         } catch(IOException errorDetails){
             if(fileStream != null){
                 try{
@@ -138,7 +138,7 @@ public class UserInterface{
             }
             System.out.println("Error brah"+ errorDetails.getMessage());
         }
-        return totalReturnVal;
+        return covidRecordArray;
     }
     
 
@@ -175,7 +175,8 @@ public class UserInterface{
 
     public static void thirdMenu(int pInput, String pInputString){
         //Scanner sc3 = new Scanner(System.in);
-        int finalCalcVal = readFileForNum("jrc1.csv",pInput);
+        //int finalCalcVal = readFileForNum("jrc1.csv",pInput);
+        int finalCalcVal = 0;
         switch(pInput){
             case 1:
                 //int finalCalcVal = readFileForNum("jrc1.csv",pInput);
