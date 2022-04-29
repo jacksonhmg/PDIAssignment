@@ -10,6 +10,12 @@ public class UserInterface{
 
 
         CovidRecord[] covidRecordArray = readFile("jrc1.csv");
+        for(int i=0; i<covidRecordArray.length; i++){ //TRYING TO DEBUG AND FIND OUT WHAT THE PROBLEM IS
+            if(covidRecordArray[i] != null){
+                System.out.println(covidRecordArray[i].getDate());
+            }
+            
+        }
         System.out.println(covidRecordArray);
 
 
@@ -27,7 +33,8 @@ public class UserInterface{
         System.out.println();
         System.out.println("Enter selection: ");
         
-        int input = sc.nextInt();
+        //int input = sc.nextInt();
+        int input = 1;
 
         switch(input){
             case 1:
@@ -110,9 +117,12 @@ public class UserInterface{
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
             line = bufRdr.readLine();
-            for(int i=0; i < lineNum; i++){
+            for(int i=0; i < (lineNum); i++){
                 //lineNum++;
                 line = bufRdr.readLine();
+                if(line != null){
+
+                
                 String [] stringArray = processLine(line);
                 for(i = 0; i<stringArray.length; i++){
                     if(stringArray[i].isEmpty()){
@@ -124,8 +134,9 @@ public class UserInterface{
                 CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
                 
                 covidRecordArray[i] = covidRecord;
+                //System.out.println(covidRecordArray[i].getDate());
 
-
+            }
 
             }
         } catch(IOException errorDetails){
@@ -167,7 +178,8 @@ public class UserInterface{
         System.out.println("> 6 = Number and percentage of cumulatively positive cases deceased");
         System.out.println("> 7 = All of the above statistics");
 
-        int input2 = sc2.nextInt();
+        //int input2 = sc2.nextInt();
+        int input2 = 1;
         sc2.close();
         return input2;
 
