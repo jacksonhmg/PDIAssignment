@@ -27,7 +27,7 @@ public class UserInterface{
                 String input1String = "All Countries";
                 int case1input = secondMenu();
                 thirdMenu(case1input, input1String);
-                System.out.println(case1input);
+                //System.out.println(case1input);
             break;
             case 2:
                 int case2input = secondMenu();
@@ -76,7 +76,7 @@ public class UserInterface{
         sc.close();
     }
 
-    public static int readFile(String pFileName){
+    public static int readFileForNum(String pFileName, int pInput){
         FileInputStream fileStream = null;
         InputStreamReader rdr;
         BufferedReader bufRdr;
@@ -90,16 +90,42 @@ public class UserInterface{
             bufRdr = new BufferedReader(rdr);
             lineNum = 0;
             line = bufRdr.readLine();
-            while(lineNum < 4){
+            boolean check = false;
+            while(check == false){
+                int cumVal = 0;
                 lineNum++;
-                while(lineNum >= 1){
+                line = bufRdr.readLine();
+                if(line != null){
                     String[] returnVal = processLine(line);
-                    System.out.println(returnVal);
+                    switch(pInput){
+                        case 1:
+                            if(!(returnVal[7].isEmpty())){
+                                cumVal = Integer.parseInt(returnVal[6]);
+                            }
+                        break;
+                        case 2:
+                            if(!(returnVal[7].isEmpty())){
+                                cumVal = Integer.parseInt(returnVal[7]);
+                            }
+                        break;
+                        case 3:
+                            if(!(returnVal[8].isEmpty())){
+                                cumVal = Integer.parseInt(returnVal[8]);
+                            }
+                        break;
+                        case 4:
+                            if(!(returnVal[9].isEmpty())){
+                                cumVal = Integer.parseInt(returnVal[9]);
+                            }
+                        break;
+                    }
                     //int cumPosVal = Integer.parseInt(returnVal[6]);
-                    //return cumPosVal;
-                    //totalReturnVal += cumPosVal;
-                    //line = bufRdr.readLine();
+                    totalReturnVal += cumVal;
                 }
+                else{
+                    check = true;
+                }
+
             }
                 fileStream.close();
         } catch(IOException errorDetails){
@@ -118,7 +144,7 @@ public class UserInterface{
 
     public static String[] processLine(String csvRow){  //reading one row of a csv file at a time, separated by string.split method
         String[] splitLine;
-        splitLine = csvRow.split(",");
+        splitLine = csvRow.split(",", -1);
         int lineLength = splitLine.length;
         return splitLine;
         //int cumPosVal = Integer.parseInt(splitLine[6]);
@@ -149,20 +175,20 @@ public class UserInterface{
 
     public static void thirdMenu(int pInput, String pInputString){
         //Scanner sc3 = new Scanner(System.in);
-
+        int finalCalcVal = readFileForNum("jrc1.csv",pInput);
         switch(pInput){
             case 1:
-                int aaaa = readFile("jrc1.csv");
-                System.out.println("Cumulative number of positive cases in " + pInputString + ":" + aaaa);
+                //int finalCalcVal = readFileForNum("jrc1.csv",pInput);
+                System.out.println("Cumulative number of positive cases in " + pInputString + ":" + finalCalcVal);
             break;
             case 2:
-
+                System.out.println("Cumulative number of deceased cases in " + pInputString + ":" + finalCalcVal);
             break;
             case 3:
-
+                System.out.println("Cumulative number of recovered cases in " + pInputString + ":" + finalCalcVal);
             break;
             case 4:
-
+                
             break;
             case 5:
 
