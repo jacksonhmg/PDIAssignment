@@ -35,11 +35,11 @@ public class Country {
         return nuts;
     }
 
-    public double getCurrentlyPositive(){
+    public double getLat(){
         return lat;
     }
 
-    public double getHospitalized(){
+    public double getLon(){
         return lon;
     }
 

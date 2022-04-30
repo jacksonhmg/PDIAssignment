@@ -3,6 +3,7 @@ import java.io.*;
 
 public class UserInterface{
     
+    
 
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
@@ -10,13 +11,15 @@ public class UserInterface{
 
 
         CovidRecord[] covidRecordArray = readFile("jrc1.csv");
-        for(int i=0; i<covidRecordArray.length; i++){ //TRYING TO DEBUG AND FIND OUT WHAT THE PROBLEM IS
-            if(covidRecordArray[i] != null){
+        /*for(int i=0; i<covidRecordArray.length; i++){ //TRYING TO DEBUG AND FIND OUT WHAT THE PROBLEM IS
+            //if(covidRecordArray[i] != null){
                 System.out.println(covidRecordArray[i].getDate());
-            }
+            //}
             
         }
+        System.out.println(covidRecordArray.length);
         System.out.println(covidRecordArray);
+        */
 
 
 
@@ -94,13 +97,13 @@ public class UserInterface{
         FileInputStream fileStream = null;
         InputStreamReader rdr;
         BufferedReader bufRdr;
-        int lineNum;
+        int lineNum = 1784;
         String line;
         int totalReturnVal = 0;
         CovidRecord[] covidRecordArray = new CovidRecord[1];
 
         try{
-            fileStream = new FileInputStream(pFileName);
+            /*fileStream = new FileInputStream(pFileName);
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
             lineNum = 0;
@@ -111,7 +114,7 @@ public class UserInterface{
             }
             fileStream.close();
 
-            covidRecordArray = new CovidRecord[lineNum];
+            */covidRecordArray = new CovidRecord[lineNum];
 
             fileStream = new FileInputStream(pFileName);
             rdr = new InputStreamReader(fileStream);
@@ -131,13 +134,16 @@ public class UserInterface{
                 }
 
                 Country country = new Country(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5]));
-                CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
-                
-                covidRecordArray[i] = covidRecord;
-                //System.out.println(covidRecordArray[i].getDate());
+                //CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
+                covidRecordArray[i] = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
+
+                //covidRecordArray[i] = covidRecord;
+                //System.out.println(covidRecordArray[i].getDate()); //printed it all out well
+                //System.out.println(covidRecordArray[i].getCumulativePositive()); //DID NOT WORK, ALL ZEROS
+                System.out.println(stringArray[6]); //worked??
 
             }
-
+            //fileStream.close();
             }
         } catch(IOException errorDetails){
             if(fileStream != null){
@@ -149,6 +155,21 @@ public class UserInterface{
             }
             System.out.println("Error brah"+ errorDetails.getMessage());
         }
+        for(int i = 0; i < lineNum; i++){
+            if(covidRecordArray[i] != null){
+                System.out.println(covidRecordArray[i].getCountry()); // (output was null) COME BACK TO LATER. CANNOT ACCESS CONTINENT OF COUNTRY
+                System.out.println(covidRecordArray[i].getDate()); //didnt work, only got last date
+                System.out.println(covidRecordArray[i].getIntensiveCare());
+                System.out.println(covidRecordArray[i].getCumulativePositive());
+                System.out.println(covidRecordArray[i].getCumulativeDeceased());
+                System.out.println(covidRecordArray[i].getCumulativeRecovered());
+                System.out.println(covidRecordArray[i].getCurrentlyPositive());
+                System.out.println(covidRecordArray[i].getHospitalized());
+                System.out.println(covidRecordArray[i].getIntensiveCare());
+            }
+            
+        }
+        //System.out.println(covidRecordArray.length); //worked
         return covidRecordArray;
     }
     

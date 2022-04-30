@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class CovidRecord {
+public class CovidRecord{
     private String date;
     private int cumulativePositive;
     private int cumulativeDeceased;
@@ -12,15 +12,19 @@ public class CovidRecord {
 
 
     public CovidRecord(String pDate, int pCumulativePositive, int pCumulativeDeceased, int pCumulativeRecovered, int pCurrentlyPositive, int pHospitalized, int pIntensiveCare, Country pCountry){
+        //super(piso3, pcontinent, pcountryName, pnuts, plat, plon);
         date = pDate;
-        pCumulativePositive = cumulativePositive;
-        pCumulativeDeceased = cumulativeDeceased;
-        pCumulativeRecovered = cumulativeRecovered;
-        pCurrentlyPositive = currentlyPositive;
-        pHospitalized = hospitalized;
-        pIntensiveCare = intensiveCare;
-        pCountry = country;
+        cumulativePositive = pCumulativePositive;
+        cumulativeDeceased = pCumulativeDeceased;
+        cumulativeRecovered = pCumulativeRecovered;
+        currentlyPositive = pCurrentlyPositive;
+        hospitalized = pHospitalized;
+        intensiveCare = pIntensiveCare;
+        country = pCountry;
     }
+
+
+    
 
     public String getDate(){
         return date;
