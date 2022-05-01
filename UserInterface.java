@@ -7,20 +7,12 @@ public class UserInterface{
 
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
+        boolean loop = true;
+        while(loop){
 
-
+        
 
         CovidRecord[] covidRecordArray = readFile("jrc1.csv");
-        /*for(int i=0; i<covidRecordArray.length; i++){ //TRYING TO DEBUG AND FIND OUT WHAT THE PROBLEM IS
-            //if(covidRecordArray[i] != null){
-                System.out.println(covidRecordArray[i].getDate());
-            //}
-            
-        }
-        System.out.println(covidRecordArray.length);
-        System.out.println(covidRecordArray);
-        */
-
 
 
         System.out.println("Welcome to the JRC COVID-19 Analysis Program. There are a total of ‘XYZ’ records loaded. Please make a selection from the Menu below tochoose which area (or date) to analyse: ");
@@ -36,46 +28,63 @@ public class UserInterface{
         System.out.println();
         System.out.println("Enter selection: ");
         
-        //int input = sc.nextInt();
-        int input = 1;
-
+        int input = sc.nextInt();
+        //int input = 1;
+        String inputString;
+        int caseInput;
         switch(input){
             case 1:
-                String input1String = "All Countries";
-                int case1input = secondMenu();
-                thirdMenu(case1input, input1String);
+                inputString = "All countries";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 2:
-                int case2input = secondMenu();
+                inputString = "Countries in South America";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 3:
-                int case3input = secondMenu();
+                inputString = "Countries in North America";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 4:
-                int case4input = secondMenu();
+                inputString = "Countries in Oceania";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 5:
-                int case5input = secondMenu();
+                inputString = "Countries in Asia";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 6:
-                int case6input = secondMenu();
+                inputString = "Countries in Africa";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 7:
-                int case7input = secondMenu();
+                inputString = "Countries in Europe";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 8:
-                int case8input = secondMenu();
+                inputString = "Enter a Country";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
             case 9:
-                int case9input = secondMenu();
+                inputString = "Enter a Date";
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
             break;
 
@@ -87,7 +96,7 @@ public class UserInterface{
         }
 
 
-
+    }
 
 
         sc.close();
@@ -97,13 +106,13 @@ public class UserInterface{
         FileInputStream fileStream = null;
         InputStreamReader rdr;
         BufferedReader bufRdr;
-        int lineNum = 1784;
+        int lineNum = 0;
         String line;
-        int totalReturnVal = 0;
+        //int totalReturnVal = 0;
         CovidRecord[] covidRecordArray = new CovidRecord[1];
 
         try{
-            /*fileStream = new FileInputStream(pFileName);
+            fileStream = new FileInputStream(pFileName);
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
             lineNum = 0;
@@ -114,37 +123,33 @@ public class UserInterface{
             }
             fileStream.close();
 
-            */covidRecordArray = new CovidRecord[lineNum];
+            covidRecordArray = new CovidRecord[lineNum];
 
             fileStream = new FileInputStream(pFileName);
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
             line = bufRdr.readLine();
             for(int i=0; i < (lineNum); i++){
-                //lineNum++;
                 line = bufRdr.readLine();
                 if(line != null){
 
-                
                 String [] stringArray = processLine(line);
-                for(i = 0; i<stringArray.length; i++){
-                    if(stringArray[i].isEmpty()){
-                        stringArray[i] = "0";
+
+                for(int j = 0; j<stringArray.length; j++){
+                    if(stringArray[j].isEmpty()){
+                        stringArray[j] = "0";
                     }
                 }
 
                 Country country = new Country(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5]));
-                //CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
-                covidRecordArray[i] = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
+                CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
 
-                //covidRecordArray[i] = covidRecord;
-                //System.out.println(covidRecordArray[i].getDate()); //printed it all out well
-                //System.out.println(covidRecordArray[i].getCumulativePositive()); //DID NOT WORK, ALL ZEROS
-                System.out.println(stringArray[6]); //worked??
+                covidRecordArray[i] = covidRecord;
 
             }
-            //fileStream.close();
+
             }
+            fileStream.close();
         } catch(IOException errorDetails){
             if(fileStream != null){
                 try{
@@ -155,11 +160,10 @@ public class UserInterface{
             }
             System.out.println("Error brah"+ errorDetails.getMessage());
         }
-        for(int i = 0; i < lineNum; i++){
+        /*for(int i = 0; i < lineNum; i++){
             if(covidRecordArray[i] != null){
-                System.out.println(covidRecordArray[i].getCountry()); // (output was null) COME BACK TO LATER. CANNOT ACCESS CONTINENT OF COUNTRY
-                System.out.println(covidRecordArray[i].getDate()); //didnt work, only got last date
-                System.out.println(covidRecordArray[i].getIntensiveCare());
+                System.out.println(covidRecordArray[i].getCountry()); 
+                System.out.println(covidRecordArray[i].getDate()); 
                 System.out.println(covidRecordArray[i].getCumulativePositive());
                 System.out.println(covidRecordArray[i].getCumulativeDeceased());
                 System.out.println(covidRecordArray[i].getCumulativeRecovered());
@@ -168,8 +172,8 @@ public class UserInterface{
                 System.out.println(covidRecordArray[i].getIntensiveCare());
             }
             
-        }
-        //System.out.println(covidRecordArray.length); //worked
+        }*/
+        //System.out.println(covidRecordArray[0].getCumulativePositive());
         return covidRecordArray;
     }
     
@@ -177,61 +181,65 @@ public class UserInterface{
     public static String[] processLine(String csvRow){  //reading one row of a csv file at a time, separated by string.split method
         String[] splitLine;
         splitLine = csvRow.split(",", -1);
-        int lineLength = splitLine.length;
         return splitLine;
-        //int cumPosVal = Integer.parseInt(splitLine[6]);
-        //return cumPosVal;
-        /*for(int i = 0; i < lineLength; i++){
-            System.out.print(splitLine[i] + " ");
         }
-        System.out.println(" ");
-    */}
 
-    public static int secondMenu(){
-        Scanner sc2 = new Scanner(System.in);
+    public static int secondMenu(Scanner pSc){
+        //Scanner sc2 = new Scanner(System.in);
 
         
         System.out.println("> 1 = Total number of cumulatively positive cases");
         System.out.println("> 2 = Total number of cumulatively deceased cases");
         System.out.println("> 3 = Total number of cumulatively recovered cases");
-        System.out.println("> 4 = Total number of currently positive cases");
+        System.out.println("> 4 = Average daily number of currently positive cases");
         System.out.println("> 5 = Number and percentage of cumulatively positive cases recovered");
         System.out.println("> 6 = Number and percentage of cumulatively positive cases deceased");
         System.out.println("> 7 = All of the above statistics");
 
-        //int input2 = sc2.nextInt();
-        int input2 = 1;
-        sc2.close();
+        int input2 = pSc.nextInt();
+        //int input2 = 1;
+        //sc2.close();
         return input2;
 
     }
 
-    public static void thirdMenu(int pInput, String pInputString){
-        //Scanner sc3 = new Scanner(System.in);
-        //int finalCalcVal = readFileForNum("jrc1.csv",pInput);
+    public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
         int finalCalcVal = 0;
+        int[] finalValArr = new int[2];
+        int[] otherFinalValArr = new int [3];
         switch(pInput){
             case 1:
-                //int finalCalcVal = readFileForNum("jrc1.csv",pInput);
-                System.out.println("Cumulative number of positive cases in " + pInputString + ":" + finalCalcVal);
+                finalCalcVal = firstFourSecondMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 2:
-                System.out.println("Cumulative number of deceased cases in " + pInputString + ":" + finalCalcVal);
+                finalCalcVal = firstFourSecondMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 3:
-                System.out.println("Cumulative number of recovered cases in " + pInputString + ":" + finalCalcVal);
+                finalCalcVal = firstFourSecondMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 4:
-                
+                finalCalcVal = firstFourSecondMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 5:
-
+                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
             break;
             case 6:
-
+                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
             break;
             case 7:
-
+                otherFinalValArr = lastMenuCalc(pInputString, pCovidRecordArray);
+                System.out.println("Cumulative number of positive cases in " + pInputString + ": " + otherFinalValArr[0]);
+                System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + otherFinalValArr[1]);
+                System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + otherFinalValArr[2]);
+                System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + otherFinalValArr[3]);
+                System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + otherFinalValArr[2] + " = " + (((double) otherFinalValArr[2] / (double) otherFinalValArr[0]) * 100) + "%");
+                System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + otherFinalValArr[1] + " = " + (((double) otherFinalValArr[1] / (double) otherFinalValArr[0]) * 100) + "%");
             break;
 
 
@@ -243,6 +251,300 @@ public class UserInterface{
         //sc3.close();
         //return input2;
     }
+
+
+    public static int firstFourSecondMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal = 0;
+        int ticker = 0;
+        switch(pInputString){
+            case "All countries":
+                switch(pInput){
+                    case 1:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                totalReturnVal += pCovidRecordArray[i].getCumulativePositive();
+                            }
+                        }
+                    break;
+                    case 2:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                totalReturnVal += pCovidRecordArray[i].getCumulativeDeceased();
+                            }
+                        }
+                    break;
+                    case 3:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                            totalReturnVal += pCovidRecordArray[i].getCumulativeRecovered();
+                            }
+                        }
+                    break;
+                    case 4:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                            ticker ++;
+                            totalReturnVal += pCovidRecordArray[i].getCurrentlyPositive();
+                            
+                            }
+                        }
+                        totalReturnVal = totalReturnVal / ticker;
+                    break;
+                    default:
+
+                    break;
+                }
+            break;
+            case "Countries in South America" :
+            switch(pInput){
+                case 1:
+                    for(int i = 0; i < pCovidRecordArray.length; i++){
+                        if(pCovidRecordArray[i] != null){
+                            if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                                totalReturnVal += pCovidRecordArray[i].getCumulativePositive();
+                            }
+                            
+                        }
+                    }
+                break;
+                case 2:
+                    for(int i = 0; i < pCovidRecordArray.length; i++){
+                        if(pCovidRecordArray[i] != null){
+                            if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                                totalReturnVal += pCovidRecordArray[i].getCumulativeDeceased();
+                            }
+                        }
+                    }
+                break;
+                case 3:
+                    for(int i = 0; i < pCovidRecordArray.length; i++){
+                        if(pCovidRecordArray[i] != null){
+                            if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                                totalReturnVal += pCovidRecordArray[i].getCumulativeRecovered(); //EQUALS ZERO INTENTIONALLY
+                            }
+                        }
+                    }
+                break;
+                case 4:
+                    for(int i = 0; i < pCovidRecordArray.length; i++){
+                        if(pCovidRecordArray[i] != null){
+                            if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                                ticker ++;
+                                totalReturnVal += pCovidRecordArray[i].getCurrentlyPositive();
+                            }
+                        }
+                    }
+                    totalReturnVal = totalReturnVal / ticker;
+                break;
+                default:
+
+                break;
+            }
+            break;
+            default:
+            break;  
+        }
+        return totalReturnVal;
+
+
+    }
+
+
+    public static int[] nextTwoMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
+        int[] totalReturnValArr = new int[2];
+        int totalReturnVal1 = 0;
+        int totalReturnVal2 = 0;
+        switch(pInputString){
+            case "All countries":
+                switch(pInput){
+                    case 5:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                totalReturnVal1 += pCovidRecordArray[i].getCumulativeRecovered();
+                            }
+                        }
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
+                            }
+                        }
+                    totalReturnValArr[0] = totalReturnVal1;
+                    totalReturnValArr[1] = totalReturnVal2;
+                    break;
+                    case 6:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                totalReturnVal1 += pCovidRecordArray[i].getCumulativeDeceased();
+                            }
+                        }
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
+                            }
+                        }
+                totalReturnValArr[0] = totalReturnVal1;
+                totalReturnValArr[1] = totalReturnVal2;
+                    break;
+                    default:
+
+                    break;
+                }
+            break;
+            case "Countries in South America":
+                totalReturnValArr = uhhhh(pInput, "SA", pCovidRecordArray);
+            break;
+            case "Countries in North America":
+                totalReturnValArr = uhhhh(pInput, "NA", pCovidRecordArray);
+            break;
+            case "Countries in Oceania":
+                totalReturnValArr = uhhhh(pInput, "OC", pCovidRecordArray);
+            break;
+            case "Countries in Asia":
+                totalReturnValArr = uhhhh(pInput, "AS", pCovidRecordArray);
+            break;
+            case "Countries in Africa":
+                totalReturnValArr = uhhhh(pInput, "AF", pCovidRecordArray);
+            break;
+            default:
+            break;  
+        }
+        return totalReturnValArr;
+    }
+
+    public static int[] uhhhh(int pInput,String pYourCountry, CovidRecord[] pCovidRecordArray){
+        int[] totalReturnValArr = new int[2];
+        int totalReturnVal1 = 0;
+        int totalReturnVal2 = 0;
+
+        switch(pInput){
+            case 5:
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals(pYourCountry)){
+                            totalReturnVal1 += pCovidRecordArray[i].getCumulativeRecovered();
+                        }
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals(pYourCountry)){
+                            totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
+                        }
+                    }
+                }
+            totalReturnValArr[0] = totalReturnVal1;
+            totalReturnValArr[1] = totalReturnVal2;
+            break;
+            case 6:
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals(pYourCountry)){
+                            totalReturnVal1 += pCovidRecordArray[i].getCumulativeDeceased();
+                        }
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals(pYourCountry)){
+                            totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
+                        }
+                    }
+                }
+        totalReturnValArr[0] = totalReturnVal1;
+        totalReturnValArr[1] = totalReturnVal2;
+            break;
+            default:
+            break;
+        }
+        return totalReturnValArr;
+
+    }
+
+    public static int[] lastMenuCalc(String pInputString, CovidRecord[] pCovidRecordArray){
+        int[] totalReturnValArr = new int[4];
+        int cumPosReturnVal = 0;
+        int cumDecReturnVal = 0;
+        int cumRecReturnVal = 0;
+        int aveCurReturnVal = 0;
+        int ticker = 0;
+        switch(pInputString){
+            case "All countries":
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        cumPosReturnVal += pCovidRecordArray[i].getCumulativePositive();
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        cumDecReturnVal += pCovidRecordArray[i].getCumulativeDeceased();
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        cumRecReturnVal += pCovidRecordArray[i].getCumulativeRecovered();
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        ticker ++;
+                        aveCurReturnVal += pCovidRecordArray[i].getCurrentlyPositive();
+                    
+                    }
+                }
+                aveCurReturnVal = aveCurReturnVal / ticker;
+                totalReturnValArr[0] = cumPosReturnVal;
+                totalReturnValArr[1] = cumDecReturnVal;
+                totalReturnValArr[2] = cumRecReturnVal;
+                totalReturnValArr[3] = aveCurReturnVal;
+            break;
+            case "Countries in South America":
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                            cumPosReturnVal += pCovidRecordArray[i].getCumulativePositive();
+                        }
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                            cumDecReturnVal += pCovidRecordArray[i].getCumulativeDeceased();
+                        }
+                    }
+                    
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                            cumRecReturnVal += pCovidRecordArray[i].getCumulativeRecovered();
+                        }
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        if(pCovidRecordArray[i].getCountry().getContinent().equals("SA")){
+                            ticker ++;
+                            aveCurReturnVal += pCovidRecordArray[i].getCurrentlyPositive();
+                        }
+                    
+                    }
+                }
+                aveCurReturnVal = aveCurReturnVal / ticker;
+                totalReturnValArr[0] = cumPosReturnVal;
+                totalReturnValArr[1] = cumDecReturnVal;
+                totalReturnValArr[2] = cumRecReturnVal;
+                totalReturnValArr[3] = aveCurReturnVal;
+            break;
+            default:
+            break;  
+        }
+        return totalReturnValArr;
+
+
+    }
+
+
+
 
 }
 
