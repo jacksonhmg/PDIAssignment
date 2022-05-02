@@ -1,3 +1,13 @@
+FOR FILE WRITING{
+    i assume we are meant to do something like write all the south america countries, north american countries 
+    to individual separate files and then when i need to address those countries i just loop through their files
+    instead of checking through the og file everytime
+}
+
+
+
+
+
 create countries{
     make an empty array 
     in a loop, update a variable with the next line of data, add that variable to the array
