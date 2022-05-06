@@ -86,16 +86,17 @@ public class UserInterface{
             sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM)
             inputString = "Enter a Country";
             do {
-                System.out.println("CHECK ME OUT");
                 caseInputString = sc.nextLine();
                 for(int j = 0; j <covidRecordArray.length; j++){
-                    if((covidRecordArray[j].getCountry().getCountryName()).equals(caseInputString)){
-                        checker = true;
+                    if(covidRecordArray[j] != null){
+                        if((covidRecordArray[j].getCountry().getCountryName()).equals(caseInputString)){
+                            checker = true;
+                        }
                     }
-                    else{
-                        System.out.println("Not a valid Country");
-                    }
-                }  
+                } 
+                if(checker == false){
+                    System.out.println("Not a valid Country");
+                } 
             } while (checker == false);
             caseInput = secondMenu(sc);
             thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
@@ -183,8 +184,8 @@ public class UserInterface{
         }
         /*for(int i = 0; i < lineNum; i++){
             if(covidRecordArray[i] != null){
-                System.out.println(covidRecordArray[i].getCountry()); 
-                System.out.println(covidRecordArray[i].getDate()); 
+                System.out.println(covidRecordArray[i].getCountry().getCountryName()); 
+                /*System.out.println(covidRecordArray[i].getDate()); 
                 System.out.println(covidRecordArray[i].getCumulativePositive());
                 System.out.println(covidRecordArray[i].getCumulativeDeceased());
                 System.out.println(covidRecordArray[i].getCumulativeRecovered());
@@ -232,26 +233,44 @@ public class UserInterface{
             case 1:
                 finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal);
+                printEnding();
             break;
             case 2:
                 finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
+                printEnding();
             break;
             case 3:
                 finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal);
+                printEnding();
+                //System.out.println();
+                //System.out.println("===============================");
+                //System.out.println();
             break;
             case 4:
                 finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal);
+                printEnding();
+                //System.out.println();
+                //System.out.println("===============================");
+                //System.out.println();
             break;
             case 5:
                 finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray);
                 System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
+                printEnding();
+                //System.out.println();
+                //System.out.println("===============================");
+                //System.out.println();
             break;
             case 6:
                 finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray);
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
+                printEnding();
+                //System.out.println();
+                //System.out.println("===============================");
+                //System.out.println();                
             break;
             case 7:
                 otherFinalValArr = lastMenuCalc(pInputString, pCovidRecordArray);
@@ -261,6 +280,10 @@ public class UserInterface{
                 System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + otherFinalValArr[3]);
                 System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + otherFinalValArr[2] + " = " + (((double) otherFinalValArr[2] / (double) otherFinalValArr[0]) * 100) + "%");
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + otherFinalValArr[1] + " = " + (((double) otherFinalValArr[1] / (double) otherFinalValArr[0]) * 100) + "%");
+                printEnding();
+                //System.out.println();
+                //System.out.println("===============================");
+                //System.out.println();
             break;
 
 
@@ -272,6 +295,12 @@ public class UserInterface{
         //sc3.close();
         //return input2;
     }
+
+    public static void printEnding(){
+        System.out.println();
+        System.out.println("===============================");
+        System.out.println();
+    }       
 
 
     public static int firstFourMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){
