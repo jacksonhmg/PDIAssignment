@@ -37,60 +37,76 @@ public class UserInterface{
         //int input = 1;
         String inputString;
         int caseInput;
+        String caseInputString = "";
+        boolean checker = false;
         switch(input){
             case 1:
                 inputString = "All countries";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 2:
                 inputString = "SA";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 3:
                 inputString = "NA";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 4:
                 inputString = "OC";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 5:
                 inputString = "AS";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 6:
                 inputString = "AF";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 7:
                 inputString = "EU";
                 caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+                thirdMenu(caseInput, inputString, covidRecordArray, "");
                 //System.out.println(case1input);
             break;
             case 8:
-                inputString = "Enter a Country";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
+            sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM)
+            inputString = "Enter a Country";
+            do {
+                System.out.println("CHECK ME OUT");
+                caseInputString = sc.nextLine();
+                for(int j = 0; j <covidRecordArray.length; j++){
+                    if((covidRecordArray[j].getCountry().getCountryName()).equals(caseInputString)){
+                        checker = true;
+                    }
+                    else{
+                        System.out.println("Not a valid Country");
+                    }
+                }  
+            } while (checker == false);
+            caseInput = secondMenu(sc);
+            thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
                 //System.out.println(case1input);
             break;
             case 9:
-                inputString = "Enter a Date";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray);
                 //System.out.println(case1input);
+                inputString = "Enter a Date";
+                caseInputString = sc.nextLine();
+                caseInput = secondMenu(sc);
+                thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
             break;
 
 
@@ -208,25 +224,25 @@ public class UserInterface{
 
     }
 
-    public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
+    public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){
         int finalCalcVal = 0;
         int[] finalValArr = new int[2];
         int[] otherFinalValArr = new int [3];
         switch(pInput){
             case 1:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 2:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 3:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 4:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal);
             break;
             case 5:
@@ -258,7 +274,7 @@ public class UserInterface{
     }
 
 
-    public static int firstFourMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
+    public static int firstFourMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){
         int totalReturnVal = 0;
         int ticker = 0;
         switch(pInputString){
@@ -301,6 +317,56 @@ public class UserInterface{
                 }
             break;
             
+            case "Enter a Country":
+                switch(pInput){
+                    case 1:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                if(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)){
+                                    totalReturnVal += pCovidRecordArray[i].getCumulativePositive();
+                                }
+                                
+                            }
+                        }
+                    break;
+                    case 2:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                if(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)){
+                                    totalReturnVal += pCovidRecordArray[i].getCumulativeDeceased();
+                                }
+                            }
+                        }
+                    break;
+                    case 3:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                if(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)){
+                                    totalReturnVal += pCovidRecordArray[i].getCumulativeRecovered(); //EQUALS ZERO INTENTIONALLY
+                                }
+                            }
+                        }
+                    break;
+                    case 4:
+                        for(int i = 0; i < pCovidRecordArray.length; i++){
+                            if(pCovidRecordArray[i] != null){
+                                if(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)){
+                                    ticker ++;
+                                    totalReturnVal += pCovidRecordArray[i].getCurrentlyPositive();
+                                }
+                            }
+                        }
+                        totalReturnVal = totalReturnVal / ticker;
+                    break;
+                    default:
+
+                    break;
+                }
+            break;
+            case "Enter a Date":
+            
+            break;
+
             default:
                 switch(pInput){
                     case 1:
