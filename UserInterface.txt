@@ -31,3 +31,31 @@ for continent selection{
 
     }
 }
+
+
+
+
+switch(pInputString){
+            case "All countries":
+
+            break;
+            case "Enter a Country":
+                notall = true;
+            break;
+                notall = true;
+            default:
+                notall = true;
+            break;
+        }
+
+        switch(pInput){
+            case 1:
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        x = pCovidRecordArray[i].getCumulativePositive();
+                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getDate().equals(pCaseInputString))){
+                            x = 0;
+                        }
+                        totalReturnVal += x;
+                    }
+                }
