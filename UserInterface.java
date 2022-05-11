@@ -281,7 +281,7 @@ public class UserInterface{
                 
             break;
             case 5:
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 if(pInputString.equals("Enter a Country")){
                     pInputString = pCaseInputString;
                 }
@@ -289,7 +289,7 @@ public class UserInterface{
                 printEnding();
             break;
             case 6:
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 if(pInputString.equals("Enter a Country")){
                     pInputString = pCaseInputString;
                 }
@@ -393,90 +393,73 @@ public class UserInterface{
     }
 
 
-    public static int[] nextTwoMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
+    public static int[] nextTwoMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){
         int[] totalReturnValArr = new int[2];
         int totalReturnVal1 = 0;
         int totalReturnVal2 = 0;
+
+        boolean notall = false;
         switch(pInputString){
             case "All countries":
-                switch(pInput){
-                    case 5:
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                totalReturnVal1 += pCovidRecordArray[i].getCumulativeRecovered();
-                            }
-                        }
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
-                            }
-                        }
-                    totalReturnValArr[0] = totalReturnVal1;
-                    totalReturnValArr[1] = totalReturnVal2;
-                    break;
-                    case 6:
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                totalReturnVal1 += pCovidRecordArray[i].getCumulativeDeceased();
-                            }
-                        }
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
-                            }
-                        }
-                totalReturnValArr[0] = totalReturnVal1;
-                totalReturnValArr[1] = totalReturnVal2;
-                    break;
-                    default:
 
-                    break;
-                }
             break;
-            
             default:
-                switch(pInput){
-                    case 5:
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                if(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString)){
-                                    totalReturnVal1 += pCovidRecordArray[i].getCumulativeRecovered();
-                                }
-                            }
-                        }
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                if(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString)){
-                                    totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
-                                }
-                            }
-                        }
-                    totalReturnValArr[0] = totalReturnVal1;
-                    totalReturnValArr[1] = totalReturnVal2;
-                    break;
-                    case 6:
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                if(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString)){
-                                    totalReturnVal1 += pCovidRecordArray[i].getCumulativeDeceased();
-                                }
-                            }
-                        }
-                        for(int i = 0; i < pCovidRecordArray.length; i++){
-                            if(pCovidRecordArray[i] != null){
-                                if(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString)){
-                                    totalReturnVal2 += pCovidRecordArray[i].getCumulativePositive();
-                                }
-                            }
-                        }
-                totalReturnValArr[0] = totalReturnVal1;
-                totalReturnValArr[1] = totalReturnVal2;
-                    break;
-                    default:
-                    break;
-                }
-            break;  
+                notall = true;
+            break;
         }
+
+        switch(pInput){
+            case 5:
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        int x = pCovidRecordArray[i].getCumulativeRecovered();
+                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getDate().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if not all is true so if its meant to check for something that isnt "All Countries"
+                            x = 0;
+                        }
+                        totalReturnVal1 += x;
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        int x = pCovidRecordArray[i].getCumulativePositive();
+                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getDate().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if not all is true so if its meant to check for something that isnt "All Countries"
+                            x = 0;
+                        }
+                        totalReturnVal2 += x;
+                    }
+                }
+            totalReturnValArr[0] = totalReturnVal1;
+            totalReturnValArr[1] = totalReturnVal2;
+            break;
+            case 6:
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        int x = pCovidRecordArray[i].getCumulativeDeceased();
+                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getDate().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if not all is true so if its meant to check for something that isnt "All Countries"
+                            x = 0;
+                        }
+                        totalReturnVal1 += x;
+                    }
+                }
+                for(int i = 0; i < pCovidRecordArray.length; i++){
+                    if(pCovidRecordArray[i] != null){
+                        int x = pCovidRecordArray[i].getCumulativePositive();
+                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getDate().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if not all is true so if its meant to check for something that isnt "All Countries"
+                            x = 0;
+                        }
+                        totalReturnVal2 += x;
+                    }
+                }
+        totalReturnValArr[0] = totalReturnVal1;
+        totalReturnValArr[1] = totalReturnVal2;
+            break;
+            default:
+
+            break;
+        }
+
+
+
         return totalReturnValArr;
     }
 
