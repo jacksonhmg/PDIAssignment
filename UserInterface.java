@@ -15,12 +15,10 @@ public class UserInterface{
         boolean loop = true;
         while(loop){
 
-        
-
         CovidRecord[] covidRecordArray = readFile("jrc2.0.csv");
 
 
-        System.out.println("Welcome to the JRC COVID-19 Analysis Program. There are a total of 1778 records loaded. Please make a selection from the Menu below tochoose which area (or date) to analyse: ");
+        System.out.println("Welcome to the JRC COVID-19 Analysis Program. There are a total of 1778 records loaded. Please make a selection from the Menu below to choose which area (or date) to analyse: ");
         System.out.println("> 1 = All countries");
         System.out.println("> 2 = Countries in South America");
         System.out.println("> 3 = Countries in North America");
@@ -32,60 +30,33 @@ public class UserInterface{
         System.out.println("> 9 = Enter a Date");
         System.out.println();
         System.out.println("Enter selection: ");
-        
-        
-        //String x = "getCountryName()";
-        
-        //System.out.println(covidRecordArray[1].getCountry().x);
 
         int input = sc.nextInt();
-        //int input = 1;
-        String inputString;
+        String inputString = "";
         int caseInput;
         String caseInputString = "";
         boolean checker = false;
         switch(input){
             case 1:
                 inputString = "All countries";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 2:
                 inputString = "SA";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 3:
                 inputString = "NA";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 4:
                 inputString = "OC";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 5:
                 inputString = "AS";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 6:
                 inputString = "AF";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 7:
                 inputString = "EU";
-                caseInput = secondMenu(sc);
-                thirdMenu(caseInput, inputString, covidRecordArray, "");
-                //System.out.println(case1input);
             break;
             case 8:
             sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM)
@@ -103,9 +74,6 @@ public class UserInterface{
                     System.out.println("Not a valid Country");
                 } 
             } while (checker == false);
-            caseInput = secondMenu(sc);
-            thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
-                //System.out.println(case1input);
             break;
             case 9:
             sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM)
@@ -123,21 +91,13 @@ public class UserInterface{
                     System.out.println("Not a valid Date");
                 } 
             } while (checker == false);
-            caseInput = secondMenu(sc);
-            thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
             break;
-
-
-
-
-
-
         }
 
+        caseInput = secondMenu(sc);
+        thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
 
     }
-
-
         sc.close();
     }
 
@@ -222,10 +182,8 @@ public class UserInterface{
         System.out.println("> 7 = All of the above statistics");
 
         int input2 = pSc.nextInt();
-        //int input2 = 1;
-        //sc2.close();
-        return input2;
 
+        return input2;
     }
 
     public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){
@@ -233,52 +191,43 @@ public class UserInterface{
         int[] finalValArr = new int[2];
         int[] otherFinalValArr = new int [3];
         switch(pInput){
-            case 1:
+            case 1: case 2: case 3: case 4:
                 finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
                 if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
                     pInputString = pCaseInputString;
                 }
+            break;
+            case 5: case 6: 
+                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
+                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
+                    pInputString = pCaseInputString;
+                }
+            break;
+        }
+
+
+        switch(pInput){
+            case 1:
                 System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal);
                 printEnding();
             break;
             case 2:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
-                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
-                    pInputString = pCaseInputString;
-                }
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
                 printEnding();
             break;
             case 3:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
-                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
-                    pInputString = pCaseInputString;
-                }
                 System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal);
                 printEnding();
             break;
             case 4:
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
-                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
-                    pInputString = pCaseInputString;
-                }
                 System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal);
-                printEnding();
-                
+                printEnding();  
             break;
             case 5:
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
-                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
-                    pInputString = pCaseInputString;
-                }
                 System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
                 printEnding();
             break;
             case 6:
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
-                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
-                    pInputString = pCaseInputString;
-                }
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
                 printEnding();                
             break;
@@ -436,8 +385,8 @@ public class UserInterface{
                         totalReturnVal2 += x;
                     }
                 }
-        totalReturnValArr[0] = totalReturnVal1;
-        totalReturnValArr[1] = totalReturnVal2;
+            totalReturnValArr[0] = totalReturnVal1;
+            totalReturnValArr[1] = totalReturnVal2;
             break;
             default:
 
