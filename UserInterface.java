@@ -3,6 +3,28 @@
 
 
 
+
+
+
+
+
+//u dont need separation of pInputString and pCaseInputString for thirdMenu, look over your code. it could all be within pInputString. no need for separation. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import java.util.*;
 import java.io.*;
 
@@ -13,7 +35,7 @@ public class UserInterface{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         boolean loop = true;
-        while(loop){
+        while(loop){ //allows the whole program to return to the start after seeing chosen knowledge
 
         CovidRecord[] covidRecordArray = readFile("jrc2.0.csv");
 
@@ -41,7 +63,7 @@ public class UserInterface{
                 inputString = "All countries";
             break;
             case 2:
-                inputString = "SA";
+                inputString = "SA"; //Assigning variables that are easily understood and are used to read through the jrc file
             break;
             case 3:
                 inputString = "NA";
@@ -59,24 +81,24 @@ public class UserInterface{
                 inputString = "EU";
             break;
             case 8:
-            sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM)
+            sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM) of the last sc.next intake. Would case an error without this.
             inputString = "Enter a Country";
-            do {
-                caseInputString = sc.nextLine();
+            do { //ask at least once
+                caseInputString = sc.nextLine(); 
                 for(int j = 0; j <covidRecordArray.length; j++){
                     if(covidRecordArray[j] != null){
-                        if((covidRecordArray[j].getCountry().getCountryName()).equals(caseInputString)){
-                            checker = true;
+                        if((covidRecordArray[j].getCountry().getCountryName()).equals(caseInputString)){ //check to see if the country inputted by the user is a valid country name in the jrc file
+                            checker = true; //if it is a valid country, break out the loop
                         }
                     }
                 } 
                 if(checker == false){
-                    System.out.println("Not a valid Country");
+                    System.out.println("Not a valid Country"); //notify user that they have inputted an incorrect country
                 } 
-            } while (checker == false);
+            } while (checker == false); //loop until they input a correct country
             break;
-            case 9:
-            sc.nextLine(); //THROWS AWAY THE '\n' (CONSUMES IT SO ITS NOT A PROBLEM)
+            case 9: //very similar to case 8 except swapped country for date
+            sc.nextLine(); 
             inputString = "Enter a Date";
             do {
                 caseInputString = sc.nextLine();
@@ -94,7 +116,7 @@ public class UserInterface{
             break;
         }
 
-        caseInput = secondMenu(sc);
+        caseInput = secondMenu(sc); //used the scanner as a parameter here beccause it gives errors if you use different scanners. i open and close the one scanner within the main method. secondMenu uses it but doesnt open or close
         thirdMenu(caseInput, inputString, covidRecordArray, caseInputString);
 
     }
@@ -116,18 +138,18 @@ public class UserInterface{
             lineNum = 0;
             line = bufRdr.readLine();
             while(line != null){
-                lineNum++;
+                lineNum++; //for calculating length of CSV file used (number of lines)
                 line = bufRdr.readLine();
             }
             fileStream.close();
 
             covidRecordArray = new CovidRecord[lineNum];
 
-            fileStream = new FileInputStream(pFileName);
+            fileStream = new FileInputStream(pFileName); //all this is renewed again to start fresh to cycle through file from the top
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
             line = bufRdr.readLine();
-            for(int i=0; i < (lineNum); i++){
+            for(int i=0; i < (lineNum); i++){  //keep within length that was found just prior
                 line = bufRdr.readLine();
                 if(line != null){
 
@@ -135,14 +157,14 @@ public class UserInterface{
 
                 for(int j = 0; j<stringArray.length; j++){
                     if(stringArray[j].isEmpty()){
-                        stringArray[j] = "0";
+                        stringArray[j] = "0"; //dealing with empty cells. if any of the cells in a line were empty, they would just be assigned the value zero
                     }
                 }
 
-                Country country = new Country(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5]));
-                CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country);
+                Country country = new Country(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5])); //create a new country object based on the important values parsed from the current line in the CSV file
+                CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country); //create a new CovidRecord object based on current CSV line
 
-                covidRecordArray[i] = covidRecord;
+                covidRecordArray[i] = covidRecord; //assign the newly created covidRecord object to the current element of the array
 
             }
 
@@ -156,7 +178,7 @@ public class UserInterface{
 
                 }
             }
-            System.out.println("Error brah"+ errorDetails.getMessage());
+            System.out.println("An error! " + errorDetails.getMessage());
         }
         
         return covidRecordArray;
@@ -165,14 +187,12 @@ public class UserInterface{
 
     public static String[] processLine(String csvRow){  //reading one row of a csv file at a time, separated by string.split method
         String[] splitLine;
-        splitLine = csvRow.split(",", -1);
+        splitLine = csvRow.split(",", -1); //the -1 keeps empty cells in the line rather than remove them. the empty cells are then dealt with in the readFile method, as explained above
         return splitLine;
         }
 
-    public static int secondMenu(Scanner pSc){
-        //Scanner sc2 = new Scanner(System.in);
+    public static int secondMenu(Scanner pSc){ //the second menu created into its own function
 
-        
         System.out.println("> 1 = Total number of cumulatively positive cases");
         System.out.println("> 2 = Total number of cumulatively deceased cases");
         System.out.println("> 3 = Total number of cumulatively recovered cases");
@@ -183,33 +203,32 @@ public class UserInterface{
 
         int input2 = pSc.nextInt();
 
-        return input2;
+        return input2; //return the choice of the user on the second menu
     }
 
-    public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){
+    public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray, String pCaseInputString){ //deals with the final output of this series of choices
         int finalCalcVal = 0;
         int[] finalValArr = new int[2];
         int[] otherFinalValArr = new int [3];
-        switch(pInput){
-            case 1: case 2: case 3: case 4:
+        switch(pInput){ //i have two separate switch cases so that in the first, i can address multiple outcomes as a whole. whereas in the second switch case, i then address each individually
+            case 1: case 2: case 3: case 4: //if any of the first four options on second menu
                 finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
-                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
-                    pInputString = pCaseInputString;
+                if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){ //if they chose to enter a country or enter a date
+                    pInputString = pCaseInputString; //change the pInputString to pCaseInputString AFTER THEY HAVE USED THE firstFourMenuCalcs METHOD BECAUSE OTHER THAT METHOD WOULDNT WORK. the pInputString is changed to pCaseInputString in these scenarios so that when its printed to the user (see below) it displays which date/country they entered. for example, pInputString would be "Enter a Country" whereas pCaseInputString would be "Brazil"
                 }
             break;
             case 5: case 6: 
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString);
+                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray, pCaseInputString); //the same. run the method first then change the variable being printed if wanting to print an entered country or date
                 if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
                     pInputString = pCaseInputString;
                 }
             break;
         }
 
-
         switch(pInput){
             case 1:
-                System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal);
-                printEnding();
+                System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal); //pInputString here would now be changed if needed to be. e.g. would now be "Brazil" and not "Enter a Country"
+                printEnding(); //see below for what this does. essentially helps aesthetic
             break;
             case 2:
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
@@ -224,14 +243,14 @@ public class UserInterface{
                 printEnding();  
             break;
             case 5:
-                System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
+                System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"); //given two values, calculate percentages
                 printEnding();
             break;
             case 6:
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
                 printEnding();                
             break;
-            case 7:
+            case 7: //this essentially runs all the other options in one go
                 otherFinalValArr = lastMenuCalc(pInputString, pCovidRecordArray ,pCaseInputString);
                 if(pInputString.equals("Enter a Country") || (pInputString.equals("Enter a Date"))){
                     pInputString = pCaseInputString;
@@ -251,7 +270,7 @@ public class UserInterface{
         
     }
 
-    public static void printEnding(){
+    public static void printEnding(){ //creating a method for ending the print statements so that it could be used easily. helps the aesthetic when viewing
         System.out.println();
         System.out.println("===============================");
         System.out.println();
@@ -263,12 +282,12 @@ public class UserInterface{
         int ticker = 0;
         
         boolean notall = false;
-        switch(pInputString){
+        switch(pInputString){ 
             case "All countries":
 
             break;
             default:
-                notall = true;
+                notall = true; //notall if a boolean checker just to check that the user did not input "All countries"
             break;
         }
 
@@ -277,7 +296,7 @@ public class UserInterface{
                 for(int i = 0; i < pCovidRecordArray.length; i++){
                     if(pCovidRecordArray[i] != null){
                         int x = pCovidRecordArray[i].getCumulativePositive(); //Does it for All countries and all other options
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getDate().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if not all is true so if its meant to check for something that isnt "All Countries"
+                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getDate().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if notall is true so if its meant to check for something that isnt "All Countries"
                             x = 0;
                         }
                         totalReturnVal += x;
