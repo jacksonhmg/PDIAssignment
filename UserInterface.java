@@ -1,30 +1,6 @@
 //REMEMBER GIT REPLACED LF WITH CRLF IN CSV FILE. IF THIS DOESNT WORK ON UNIX, CHANGE THIS BACK
 
 
-
-
-
-
-
-
-
-//u dont need separation of pInputString and pCaseInputString for thirdMenu, look over your code. it could all be within pInputString. no need for separation. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import java.util.*;
 import java.io.*;
 
