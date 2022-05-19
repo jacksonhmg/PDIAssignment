@@ -32,7 +32,6 @@ public class UserInterface{
         int input = sc.nextInt();
         String inputString = "";
         int caseInput;
-        String caseInputString = "";
         boolean checker = false;
         switch(input){
             case 1:
@@ -183,43 +182,54 @@ public class UserInterface{
     public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){ //deals with the final output of this series of choices
         int finalCalcVal = 0;
         int[] finalValArr = new int[2];
-        int[] otherFinalValArr = new int [3];
+        int[] otherFinalValArr = new int [4];
         switch(pInput){ //i have two separate switch cases so that in the first, i can address multiple outcomes as a whole. whereas in the second switch case, i then address each individually
             case 1: case 2: case 3: case 4: //if any of the first four options on second menu
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
+                //finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
             break;
-            case 5: case 6: 
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray); //the same. run the method first then change the variable being printed if wanting to print an entered country or date
+            case 5: case 6: case 7:
+                //finalValArr[1] = firstFourMenuCalcs(1, pInputString, pCovidRecordArray);
+                finalValArr[1] = cumPos(pInputString, pCovidRecordArray);
+                //finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray); //the same. run the method first then change the variable being printed if wanting to print an entered country or date
             break;
         }
 
         switch(pInput){
             case 1:
+                finalCalcVal = cumPos(pInputString, pCovidRecordArray);
                 System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal); //pInputString here would now be changed if needed to be. e.g. would now be "Brazil" and not "Enter a Country"
                 printEnding(); //see below for what this does. essentially helps aesthetic
             break;
             case 2:
+                finalCalcVal = cumDec(pInputString, pCovidRecordArray);
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
                 printEnding();
             break;
             case 3:
+                finalCalcVal = cumRec(pInputString, pCovidRecordArray);
                 System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal);
                 printEnding();
             break;
             case 4:
+                finalCalcVal = currPos(pInputString, pCovidRecordArray);
                 System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal);
                 printEnding();  
             break;
             case 5:
+                finalValArr[0] = firstFourMenuCalcs(3, pInputString, pCovidRecordArray);
                 System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"); //I CALCULATE PERCENTAGE HERE SO THAT I CAN HAVE FIRST VALUE AS AN INTEGER FOR FIRST "NUMBER PART OF PRINT" AND THEN CAN CHANGE IT TO A PERCENTAGE (double) AFTERWARDS.
                 printEnding();
             break;
             case 6:
+                finalValArr[0] = firstFourMenuCalcs(2, pInputString, pCovidRecordArray);
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
                 printEnding();                
             break;
             case 7: //this essentially runs all the other options in one go
-                otherFinalValArr = lastMenuCalc(pInputString, pCovidRecordArray);
+                otherFinalValArr[0] = finalValArr[1];
+                otherFinalValArr[1] = firstFourMenuCalcs(2, pInputString, pCovidRecordArray);
+                otherFinalValArr[2] = firstFourMenuCalcs(3, pInputString, pCovidRecordArray);
+                otherFinalValArr[3] = firstFourMenuCalcs(4, pInputString, pCovidRecordArray);
                 System.out.println("Cumulative number of positive cases in " + pInputString + ": " + otherFinalValArr[0]);
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + otherFinalValArr[1]);
                 System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + otherFinalValArr[2]);
@@ -312,148 +322,114 @@ public class UserInterface{
     }
 
 
-    public static int[] nextTwoMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){ //see explanation in thirdMenu for why i send an array of two integers back
-        int[] totalReturnValArr = new int[2]; 
-        int totalReturnVal1 = 0;
-        int totalReturnVal2 = 0;
 
+    public static int cumPos(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal = 0;
+        
         boolean notall = false;
-        switch(pInputString){
+        switch(pInputString){ 
             case "All countries":
 
             break;
             default:
-                notall = true;
-            break;
-        }
-
-        switch(pInput){
-            case 5:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativeRecovered();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //see explanation above in firstFourMenuCalcs
-                            x = 0;
-                        }
-                        totalReturnVal1 += x;
-                    }
-                }
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativePositive();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                            x = 0;
-                        }
-                        totalReturnVal2 += x;
-                    }
-                }
-            totalReturnValArr[0] = totalReturnVal1;
-            totalReturnValArr[1] = totalReturnVal2;
-            break;
-            case 6:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativeDeceased();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                            x = 0;
-                        }
-                        totalReturnVal1 += x;
-                    }
-                }
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativePositive();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                            x = 0;
-                        }
-                        totalReturnVal2 += x;
-                    }
-                }
-            totalReturnValArr[0] = totalReturnVal1;
-            totalReturnValArr[1] = totalReturnVal2;
-            break;
-            default:
-
-            break;
-        }
-
-
-
-        return totalReturnValArr;
-    }
-
-    
-    public static int[] lastMenuCalc(String pInputString, CovidRecord[] pCovidRecordArray){ //a summary of all other methods put into one succint method
-        int[] totalReturnValArr = new int[4];
-        int cumPosReturnVal = 0;
-        int cumDecReturnVal = 0;
-        int cumRecReturnVal = 0;
-        int aveCurReturnVal = 0;
-        int ticker = 0;
-
-        boolean notall = false;
-        switch(pInputString){
-            case "All countries":
-
-            break;
-            default:
-                notall = true;
+                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
             break;
         }
 
         for(int i = 0; i < pCovidRecordArray.length; i++){
             if(pCovidRecordArray[i] != null){
-                int x = pCovidRecordArray[i].getCumulativePositive();
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                    x = 0;
+                int x = pCovidRecordArray[i].getCumulativePositive(); //Does it for all possible options
+                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if notall is true(not "All countries" so checking for something specific) and its doesnt match any given country, continent or date then it must not be what we're looking for
+                    x = 0; //negate this entry if so
                 }
-                cumPosReturnVal += x;
+                totalReturnVal += x;
             }
         }
+        return totalReturnVal;
+        
+    }
+
+    public static int cumDec(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal = 0;
+        
+        boolean notall = false;
+        switch(pInputString){ 
+            case "All countries":
+
+            break;
+            default:
+                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
+            break;
+        }
+
         for(int i = 0; i < pCovidRecordArray.length; i++){
             if(pCovidRecordArray[i] != null){
                 int x = pCovidRecordArray[i].getCumulativeDeceased();
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
+                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
                     x = 0;
                 }
-                cumDecReturnVal += x;
+                totalReturnVal += x;
             }
         }
+        
+        return totalReturnVal;
+    }
+
+    public static int cumRec(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal = 0;
+        
+        boolean notall = false;
+        switch(pInputString){ 
+            case "All countries":
+
+            break;
+            default:
+                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
+            break;
+        }
+
         for(int i = 0; i < pCovidRecordArray.length; i++){
             if(pCovidRecordArray[i] != null){
                 int x = pCovidRecordArray[i].getCumulativeRecovered();
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
+                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
                     x = 0;
                 }
-                cumRecReturnVal += x;
+                totalReturnVal += x;
             }
         }
+    
+        return totalReturnVal;
+    }
+
+    public static int currPos(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal = 0;
+        int ticker = 0;
+
+        boolean notall = false;
+        switch(pInputString){ 
+            case "All countries":
+
+            break;
+            default:
+                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
+            break;
+        }
+
         for(int i = 0; i < pCovidRecordArray.length; i++){
             if(pCovidRecordArray[i] != null){
                 int x = pCovidRecordArray[i].getCurrentlyPositive();
                 ticker ++;
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
+                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
                     x = 0;
-                    ticker --;
+                    ticker --; //additional negate needed so that the counter only ticks up on valid lines
                 }
-                aveCurReturnVal += x;
+                totalReturnVal += x;
             }
         }
-        aveCurReturnVal = aveCurReturnVal / ticker;
-        totalReturnValArr[0] = cumPosReturnVal;
-        totalReturnValArr[1] = cumDecReturnVal;
-        totalReturnValArr[2] = cumRecReturnVal;
-        totalReturnValArr[3] = aveCurReturnVal;
-
-
-
-
-
-        return totalReturnValArr;
-
-
+        totalReturnVal = totalReturnVal / ticker; //to get average
+        
+        return totalReturnVal;
     }
-
 
 
 

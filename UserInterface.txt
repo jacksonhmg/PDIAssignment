@@ -1,3 +1,18 @@
+
+
+//make a comment in actual code about how you do line = readline twice to skip first line (in readFile)
+
+//LASTMENU CALC IS REDUNDANT, JUST CALL FIRSTFOURMENUCALCS IN THIRDMENU FOR EACH OF THOSE DESIRED VALUES, REMOVE LASTMENUCALC
+
+
+
+
+
+
+
+
+
+
 FOR FILE WRITING{
     i assume we are meant to do something like write all the south america countries, north american countries 
     to individual separate files and then when i need to address those countries i just loop through their files
@@ -73,12 +88,12 @@ public class UserInterface{
     
     
 
-    public main{
+    main{
         create new scanner sc
-        boolean loop = true;
+        boolean loop EQUALS TO true;
         (while loop is true){
 
-        array of covid records (covidRecordArray) = readFile("csv file name")
+        array of covid records (covidRecordArray) EQUALS TO readFile("csv file name")
 
 
         print "Welcome to the JRC COVID-19 Analysis Program. There are a total of 1778 records loaded. Please make a selection from the Menu below to choose which area (or date) to analyse: "
@@ -94,41 +109,41 @@ public class UserInterface{
         print empty line
         print "Enter selection: "
 
-        int input = next integer input into scanner
-        String inputString = ""
+        int input EQUALS TO next integer input into scanner
+        String inputString EQUALS TO ""
         int caseInput
-        String caseInputString = ""
-        boolean checker = false
+        String caseInputString EQUALS TO ""
+        boolean checker EQUALS TO false
         SWITCH (input)
             case 1:
-                inputString = "All countries"
+                inputString EQUALS TO "All countries"
             break
             case 2:
-                inputString = "SA"
+                inputString EQUALS TO "SA"
             break
             case 3:
-                inputString = "NA"
+                inputString EQUALS TO "NA"
             break
             case 4:
-                inputString = "OC"
+                inputString EQUALS TO "OC"
             break
             case 5:
-                inputString = "AS"
+                inputString EQUALS TO "AS"
             break
             case 6:
-                inputString = "AF"
+                inputString EQUALS TO "AF"
             break
             case 7:
-                inputString = "EU"
+                inputString EQUALS TO "EU"
             break
             case 8:
             consume end of last line for scanner
             do 
-                inputString = next line of user input
+                inputString EQUALS TO next line of user input
                 for each element in the covidRecordArray (each valid line in the csv file)
                     if the element is valid
                         if the element's country equals to the line of user input
-                            checker = true
+                            checker EQUALS TO true
         
                 if checker equals to false 
                     print "Not a valid Country"
@@ -138,11 +153,11 @@ public class UserInterface{
             case 9:
             consume end of last line for scanner
             do 
-                inputString = next line of user input
+                inputString EQUALS TO next line of user input
                 for each element in the covidRecordArray (each valid line in the csv file)
                     if the element is valid
                         if the element's date equals to the line of user input
-                            checker = true
+                            checker EQUALS TO true
         
                 if checker equals to false 
                     print "Not a valid Date"
@@ -151,144 +166,145 @@ public class UserInterface{
             break
         
 
-        caseInput = secondMenu(sc)
+        caseInput EQUALS TO secondMenu(sc)
         thirdMenu(caseInput, inputString, covidRecordArray)
 
     
         close scanner
     
 
-    CovidRecord[] readFile(String pFileName)
-        FileInputStream fileStream = null;
-        InputStreamReader rdr;
-        BufferedReader bufRdr;
-        int lineNum = 0;
-        String line;
-        CovidRecord[] covidRecordArray = new CovidRecord[1];
+    function = "readFile" , with parameters (String pFileName) and returns a CovidRecord array{
+        create new fileStream
+        create new InputStreamReader (rdr)
+        create new BufferedReader (bufRdr)
+        lineNum EQUALS TO 0
+        String line
+        create new covidRecordArray
 
         try{
-            fileStream = new FileInputStream(pFileName);
-            rdr = new InputStreamReader(fileStream);
-            bufRdr = new BufferedReader(rdr);
-            lineNum = 0;
-            line = bufRdr.readLine();
-            while(line != null){
-                lineNum++; //for calculating length of CSV file used (number of lines)
-                line = bufRdr.readLine();
+            fileStream takes pFileName
+            rdr reads fileStream
+            bufRdr reads rdr
+            lineNum EQUALS TO 0
+            line equals to bufRdr reading line
+            while line does not equal null {
+                add +1 to lineNum 
+                line equals to bufRdr reading line
             }
-            fileStream.close();
+            close fileStream
 
-            covidRecordArray = new CovidRecord[lineNum];
+            make covidRecordArray the size of lineNum
 
-            fileStream = new FileInputStream(pFileName); //all this is renewed again to start fresh to cycle through file from the top
-            rdr = new InputStreamReader(fileStream);
-            bufRdr = new BufferedReader(rdr);
-            line = bufRdr.readLine();
-            for(int i=0; i < (lineNum); i++){  //keep within length that was found just prior
-                line = bufRdr.readLine();
-                if(line != null){
+            fileStream takes pFileName again to refresh
+            rdr reads fileStream
+            bufRdr reads rdr
+            line equals to bufRdr reading line 
+            for i EQUALS zero, i LESS THAN lineNum, i increment by 1{
+                line equals to bufRdr reading line
+                if line does not equal null {
 
-                String [] stringArray = processLine(line);
+                new stringArray equals to processLine(line)
 
-                for(int j = 0; j<stringArray.length; j++){
-                    if(stringArray[j].isEmpty()){
-                        stringArray[j] = "0"; //dealing with empty cells. if any of the cells in a line were empty, they would just be assigned the value zero
+                for j EQUALS zero, j LESS THAN stringArray length, j increment by 1{
+                    if stringArray[j] is an empty element {
+                        stringArray[j] EQUALS "0"
                     }
                 }
 
-                Country country = new Country(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5])); //create a new country object based on the important values parsed from the current line in the CSV file
-                CovidRecord covidRecord = new CovidRecord(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country); //create a new CovidRecord object based on current CSV line
+                Country country EQUALS to a new Country with parameters(stringArray[1], stringArray[2], stringArray[3], stringArray[12], Double.parseDouble(stringArray[4]), Double.parseDouble(stringArray[5]))
+                CovidRecord covidRecord EQUALS to a new CovidRecord with parameters(stringArray[0], Integer.parseInt(stringArray[6]), Integer.parseInt(stringArray[7]), Integer.parseInt(stringArray[8]), Integer.parseInt(stringArray[9]), Integer.parseInt(stringArray[10]), Integer.parseInt(stringArray[11]), country)
 
-                covidRecordArray[i] = covidRecord; //assign the newly created covidRecord object to the current element of the array
-
-            }
+                covidRecordArray[i] EQUALS covidRecord; //assign the newly created covidRecord object to the current element of the array
 
             }
-            fileStream.close();
-        } catch(IOException errorDetails){
-            if(fileStream != null){
+
+            }
+            close fileStream
+        } catch an IO error{
+            if fileStream is not null{
                 try{
-                    fileStream.close();
-                }catch(IOException ex2){
+                    close fileStream
+                }catch an IO error{
 
                 }
             }
-            System.out.println("An error! " + errorDetails.getMessage());
+            print "An error! " + errorDetails.getMessage()
         }
         
-        return covidRecordArray;
+        return covidRecordArray
     }
-    
 
-    public static String[] processLine(String csvRow){  //reading one row of a csv file at a time, separated by string.split method
-        String[] splitLine;
-        splitLine = csvRow.split(",", -1); //the -1 keeps empty cells in the line rather than remove them. the empty cells are then dealt with in the readFile method, as explained above
-        return splitLine;
+
+    function = "processLine" , with parameters(String csvRow) and returns a string array{
+        create new string array called splitLine
+        splitLine EQUALS to csvRow being split by "," , and keeping any empty cells
+        return splitLine
         }
 
-    public static int secondMenu(Scanner pSc){ //the second menu created into its own function
+    function = "secondMenu" , with parameters(Scanner pSc) and returns an integer{
 
-        System.out.println("> 1 = Total number of cumulatively positive cases");
-        System.out.println("> 2 = Total number of cumulatively deceased cases");
-        System.out.println("> 3 = Total number of cumulatively recovered cases");
-        System.out.println("> 4 = Average daily number of currently positive cases");
-        System.out.println("> 5 = Number and percentage of cumulatively positive cases recovered");
-        System.out.println("> 6 = Number and percentage of cumulatively positive cases deceased");
-        System.out.println("> 7 = All of the above statistics");
+        print "> 1 = Total number of cumulatively positive cases"
+        print "> 2 = Total number of cumulatively deceased cases"
+        print "> 3 = Total number of cumulatively recovered cases"
+        print "> 4 = Average daily number of currently positive cases"
+        print "> 5 = Number and percentage of cumulatively positive cases recovered"
+        print "> 6 = Number and percentage of cumulatively positive cases deceased"
+        print "> 7 = All of the above statistics");
 
-        int input2 = pSc.nextInt();
+        input2 equals the next integer read by the scanner
 
-        return input2; //return the choice of the user on the second menu
+        return input2
     }
 
-    public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){ //deals with the final output of this series of choices
-        int finalCalcVal = 0;
-        int[] finalValArr = new int[2];
-        int[] otherFinalValArr = new int [3];
-        switch(pInput){ //i have two separate switch cases so that in the first, i can address multiple outcomes as a whole. whereas in the second switch case, i then address each individually
-            case 1: case 2: case 3: case 4: //if any of the first four options on second menu
-                finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
-            break;
+
+    function = "thirdMenu" with parameters(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
+        finalCalcVal EQUALS TO 0
+        finalValArr EQUALS TO an integer array of size 2
+        otherFinalValArr EQUALS to an integer array of size 3
+        switch(pInput){ 
+            case 1: case 2: case 3: case 4:
+                finalCalcVal EQUALS TO firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray)
+            break
             case 5: case 6: 
-                finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray); //the same. run the method first then change the variable being printed if wanting to print an entered country or date
-            break;
+                finalValArr EQUALS TO nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray)
+            break
         }
 
         switch(pInput){
             case 1:
-                System.out.println("Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal); //pInputString here would now be changed if needed to be. e.g. would now be "Brazil" and not "Enter a Country"
-                printEnding(); //see below for what this does. essentially helps aesthetic
-            break;
+                print "Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal
+                printEnding()
+            break
             case 2:
-                System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal);
-                printEnding();
-            break;
+                print "Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal
+                printEnding()
+            break
             case 3:
-                System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal);
-                printEnding();
-            break;
+                print "Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal
+                printEnding()
+            break
             case 4:
-                System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal);
-                printEnding();  
-            break;
+                print "Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal
+                printEnding()
+            break
             case 5:
-                System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"); //I CALCULATE PERCENTAGE HERE SO THAT I CAN HAVE FIRST VALUE AS AN INTEGER FOR FIRST "NUMBER PART OF PRINT" AND THEN CAN CHANGE IT TO A PERCENTAGE (double) AFTERWARDS.
-                printEnding();
-            break;
+                print "Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"
+                printEnding()
+            break
             case 6:
-                System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
-                printEnding();                
-            break;
-            case 7: //this essentially runs all the other options in one go
-                otherFinalValArr = lastMenuCalc(pInputString, pCovidRecordArray);
-                System.out.println("Cumulative number of positive cases in " + pInputString + ": " + otherFinalValArr[0]);
-                System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + otherFinalValArr[1]);
-                System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + otherFinalValArr[2]);
-                System.out.println("Average daily number of currently positive cases in " + pInputString + ": " + otherFinalValArr[3]);
-                System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + otherFinalValArr[2] + " = " + (((double) otherFinalValArr[2] / (double) otherFinalValArr[0]) * 100) + "%");
-                System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + otherFinalValArr[1] + " = " + (((double) otherFinalValArr[1] / (double) otherFinalValArr[0]) * 100) + "%");
+                print "Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"
+                printEnding()              
+            break
+            case 7: 
+                otherFinalValArr EQUALS TO lastMenuCalc(pInputString, pCovidRecordArray);
+                print "Cumulative number of positive cases in " + pInputString + ": " + otherFinalValArr[0]
+                print "Cumulative number of deceased cases in " + pInputString + ": " + otherFinalValArr[1]
+                print "Cumulative number of recovered cases in " + pInputString + ": " + otherFinalValArr[2]
+                print "Average daily number of currently positive cases in " + pInputString + ": " + otherFinalValArr[3]
+                print "Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + otherFinalValArr[2] + " = " + (((double) otherFinalValArr[2] / (double) otherFinalValArr[0]) * 100) + "%"
+                print "Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + otherFinalValArr[1] + " = " + (((double) otherFinalValArr[1] / (double) otherFinalValArr[0]) * 100) + "%"
                 printEnding();
-            break;
+            break
 
 
 
@@ -296,229 +312,189 @@ public class UserInterface{
         
     }
 
-    public static void printEnding(){ //creating a method for ending the print statements so that it could be used easily. helps the aesthetic when viewing
-        System.out.println();
-        System.out.println("===============================");
-        System.out.println();
+    function = "printEnding"{
+        print an empty line
+        print "==============================="
+        print an empty line
     }       
 
 
-    public static int firstFourMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
-        int totalReturnVal = 0;
-        int ticker = 0;
+    function = "firstFourMenuCalcs" with parameters(int pInput, String pInputString, CovidRecord[] pCovidRecordArray) and returns an integer{
+        totalReturnVal EQUALS TO 0
+        ticker EQUALS TO 0
         
-        boolean notall = false;
+        notall EQUALS TO false
         switch(pInputString){ 
             case "All countries":
 
-            break;
+            break
             default:
-                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
-            break;
+                notall EQUALS TO true
+            break
         }
 
         switch(pInput){
             case 1:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativePositive(); //Does it for all possible options
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if notall is true(not "All countries" so checking for something specific) and its doesnt match any given country, continent or date then it must not be what we're looking for
-                            x = 0; //negate this entry if so
+                for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
+                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
+                        x EQUALS TO pCovidRecordArray[i].getCumulativePositive()
+                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
+                            x EQUALS TO 0
                         }
-                        totalReturnVal += x;
+                        add x to totalReturnVal
                     }
                 }
             break;
             case 2:
-            for(int i = 0; i < pCovidRecordArray.length; i++){
-                if(pCovidRecordArray[i] != null){
-                    int x = pCovidRecordArray[i].getCumulativeDeceased();
-                    if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                        x = 0;
+            for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
+                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
+                        x EQUALS TO pCovidRecordArray[i].getCumulativeDeceased()
+                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
+                            x EQUALS TO 0
+                        }
+                        add x to totalReturnVal
                     }
-                    totalReturnVal += x;
                 }
-            }
             break;
             case 3:
-            for(int i = 0; i < pCovidRecordArray.length; i++){
-                if(pCovidRecordArray[i] != null){
-                    int x = pCovidRecordArray[i].getCumulativeRecovered();
-                    if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                        x = 0;
+            for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
+                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
+                        x EQUALS TO pCovidRecordArray[i].getCumulativeRecovered()
+                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
+                            x EQUALS TO 0
+                        }
+                        add x to totalReturnVal
                     }
-                    totalReturnVal += x;
                 }
-            }
-            break;
+            break
             case 4:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCurrentlyPositive();
-                        ticker ++;
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                            x = 0;
-                            ticker --; //additional negate needed so that the counter only ticks up on valid lines
+                for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
+                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
+                        x EQUALS TO pCovidRecordArray[i].getCurrentlyPositive()
+                        add +1 to ticker
+                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
+                            x EQUALS TO 0
+                            subtract +1 from ticker
                         }
-                        totalReturnVal += x;
+                        add x to totalReturnVal
                     }
                 }
-                totalReturnVal = totalReturnVal / ticker; //to get average
-            break;
+                totalReturnVal EQUALS TO totalReturnVal divided by ticker
+            break
             default:
 
-            break;
+            break
         }
-        return totalReturnVal;
-    }
-
-
-    public static int[] nextTwoMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){ //see explanation in thirdMenu for why i send an array of two integers back
-        int[] totalReturnValArr = new int[2]; 
-        int totalReturnVal1 = 0;
-        int totalReturnVal2 = 0;
-
-        boolean notall = false;
-        switch(pInputString){
-            case "All countries":
-
-            break;
-            default:
-                notall = true;
-            break;
-        }
-
-        switch(pInput){
-            case 5:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativeRecovered();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //see explanation above in firstFourMenuCalcs
-                            x = 0;
-                        }
-                        totalReturnVal1 += x;
-                    }
-                }
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativePositive();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                            x = 0;
-                        }
-                        totalReturnVal2 += x;
-                    }
-                }
-            totalReturnValArr[0] = totalReturnVal1;
-            totalReturnValArr[1] = totalReturnVal2;
-            break;
-            case 6:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativeDeceased();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                            x = 0;
-                        }
-                        totalReturnVal1 += x;
-                    }
-                }
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativePositive();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                            x = 0;
-                        }
-                        totalReturnVal2 += x;
-                    }
-                }
-            totalReturnValArr[0] = totalReturnVal1;
-            totalReturnValArr[1] = totalReturnVal2;
-            break;
-            default:
-
-            break;
-        }
-
-
-
-        return totalReturnValArr;
-    }
-
-    
-    public static int[] lastMenuCalc(String pInputString, CovidRecord[] pCovidRecordArray){ //a summary of all other methods put into one succint method
-        int[] totalReturnValArr = new int[4];
-        int cumPosReturnVal = 0;
-        int cumDecReturnVal = 0;
-        int cumRecReturnVal = 0;
-        int aveCurReturnVal = 0;
-        int ticker = 0;
-
-        boolean notall = false;
-        switch(pInputString){
-            case "All countries":
-
-            break;
-            default:
-                notall = true;
-            break;
-        }
-
-        for(int i = 0; i < pCovidRecordArray.length; i++){
-            if(pCovidRecordArray[i] != null){
-                int x = pCovidRecordArray[i].getCumulativePositive();
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                    x = 0;
-                }
-                cumPosReturnVal += x;
-            }
-        }
-        for(int i = 0; i < pCovidRecordArray.length; i++){
-            if(pCovidRecordArray[i] != null){
-                int x = pCovidRecordArray[i].getCumulativeDeceased();
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                    x = 0;
-                }
-                cumDecReturnVal += x;
-            }
-        }
-        for(int i = 0; i < pCovidRecordArray.length; i++){
-            if(pCovidRecordArray[i] != null){
-                int x = pCovidRecordArray[i].getCumulativeRecovered();
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                    x = 0;
-                }
-                cumRecReturnVal += x;
-            }
-        }
-        for(int i = 0; i < pCovidRecordArray.length; i++){
-            if(pCovidRecordArray[i] != null){
-                int x = pCovidRecordArray[i].getCurrentlyPositive();
-                ticker ++;
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ 
-                    x = 0;
-                    ticker --;
-                }
-                aveCurReturnVal += x;
-            }
-        }
-        aveCurReturnVal = aveCurReturnVal / ticker;
-        totalReturnValArr[0] = cumPosReturnVal;
-        totalReturnValArr[1] = cumDecReturnVal;
-        totalReturnValArr[2] = cumRecReturnVal;
-        totalReturnValArr[3] = aveCurReturnVal;
-
-
-
-
-
-        return totalReturnValArr;
-
-
+        return totalReturnVal
     }
 
 
 
+import packages
+
+
+public class Country {
+    String iso3
+    String continent
+    String countryName
+    String nuts
+    double lat
+    double lon
+
+    //Parameters Constructor
+    public Country(String piso3, String pcontinent, String pcountryName, String pnuts, double plat, double plon){
+        iso3 EQUALS TO piso3
+        continent EQUALS TO pcontinent
+        countryName EQUALS TO pcountryName
+        nuts EQUALS TO pnuts
+        lat EQUALS TO plat
+        lon EQUALS TO plon
+    }
+
+    function "getIso3" {
+        return iso3
+    }
+
+    function = "getContinent" {
+        return continent
+    }
+
+    function = "getCountryName" {
+        return countryName
+    }
+
+    function = "getNuts" {
+        return nuts
+    }
+
+    function = "getLat" {
+        return lat
+    }
+
+    function = "getLon" {
+        return lon
+    }
 
 }
 
 
+import packages
 
+public class CovidRecord{
+    String date
+    int cumulativePositive
+    int cumulativeDeceased
+    int cumulativeRecovered 
+    int currentlyPositive
+    int hospitalized
+    int intensiveCare
+    Country country
+
+
+    public CovidRecord(String pDate, int pCumulativePositive, int pCumulativeDeceased, int pCumulativeRecovered, int pCurrentlyPositive, int pHospitalized, int pIntensiveCare, Country pCountry){
+        date EQUALS TO pDate
+        cumulativePositive EQUALS TO pCumulativePositive
+        cumulativeDeceased EQUALS TO pCumulativeDeceased
+        cumulativeRecovered EQUALS TO pCumulativeRecovered
+        currentlyPositive EQUALS TO pCurrentlyPositive
+        hospitalized EQUALS TO pHospitalized
+        intensiveCare EQUALS TO pIntensiveCare
+        country EQUALS TO pCountry
+    }
+
+
+    
+
+    function = "getDate" {
+        return date
+    }
+
+    function = "getCumulativePositive" {
+        return cumulativePositive
+    }
+
+    function = "getCumulativeDeceased" {
+        return cumulativeDeceased
+    }
+
+    function = "getCumulativeRecovered" {
+        return cumulativeRecovered
+    }
+
+    function = "getCurrentlyPositive" {
+        return currentlyPositive
+    }
+
+    function = "getHospitalized" {
+        return hospitalized
+    }
+
+    function = "getIntensiveCare" {
+        return intensiveCare
+    }
+
+    function = "getCountry" {
+        return country
+    }
+
+}
