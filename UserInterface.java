@@ -1,4 +1,4 @@
-//REMEMBER GIT REPLACED LF WITH CRLF IN CSV FILE. IF THIS DOESNT WORK ON UNIX, CHANGE THIS BACK
+//REMEMBER GIT COMMITS REPLACED LF WITH CRLF IN CSV FILE. IF THIS DOESNT WORK ON UNIX, CHANGE THIS BACK
 
 
 import java.util.*;
@@ -66,7 +66,7 @@ public class UserInterface{
                         }
                     }
                 } 
-                if(checker == false){
+                if(checker == false){ 
                     System.out.println("Not a valid Country"); //notify user that they have inputted an incorrect country
                 } 
             } while (checker == false); //loop until they input a correct country
@@ -82,10 +82,10 @@ public class UserInterface{
                         }
                     }
                 } 
-                if(checker == false){
+                if(checker == false){ 
                     System.out.println("Not a valid Date");
                 } 
-            } while (checker == false);
+            } while (checker == false); //loops until they input a correct date
             break;
         }
 
@@ -96,6 +96,23 @@ public class UserInterface{
         sc.close();
     }
 
+    
+    public static int secondMenu(Scanner pSc){ //the second menu created into its own function
+
+        System.out.println("> 1 = Total number of cumulatively positive cases");
+        System.out.println("> 2 = Total number of cumulatively deceased cases");
+        System.out.println("> 3 = Total number of cumulatively recovered cases");
+        System.out.println("> 4 = Average daily number of currently positive cases");
+        System.out.println("> 5 = Number and percentage of cumulatively positive cases recovered");
+        System.out.println("> 6 = Number and percentage of cumulatively positive cases deceased");
+        System.out.println("> 7 = All of the above statistics");
+
+        int input2 = pSc.nextInt();
+
+        return input2; //return the choice of the user on the second menu
+    }
+    
+    
     public static CovidRecord[] readFile(String pFileName){
         FileInputStream fileStream = null;
         InputStreamReader rdr;
@@ -121,9 +138,9 @@ public class UserInterface{
             fileStream = new FileInputStream(pFileName); //all this is renewed again to start fresh to cycle through file from the top
             rdr = new InputStreamReader(fileStream);
             bufRdr = new BufferedReader(rdr);
-            line = bufRdr.readLine();
+            line = bufRdr.readLine(); //i do an extra read line here before starting the actual loop to "THROW AWAY" the first line of the text file which was just the headers
             for(int i=0; i < (lineNum); i++){  //keep within length that was found just prior
-                line = bufRdr.readLine();
+                line = bufRdr.readLine(); //where the actual data starts (the second line)
                 if(line != null){
 
                 String [] stringArray = processLine(line);
@@ -164,33 +181,17 @@ public class UserInterface{
         return splitLine;
         }
 
-    public static int secondMenu(Scanner pSc){ //the second menu created into its own function
-
-        System.out.println("> 1 = Total number of cumulatively positive cases");
-        System.out.println("> 2 = Total number of cumulatively deceased cases");
-        System.out.println("> 3 = Total number of cumulatively recovered cases");
-        System.out.println("> 4 = Average daily number of currently positive cases");
-        System.out.println("> 5 = Number and percentage of cumulatively positive cases recovered");
-        System.out.println("> 6 = Number and percentage of cumulatively positive cases deceased");
-        System.out.println("> 7 = All of the above statistics");
-
-        int input2 = pSc.nextInt();
-
-        return input2; //return the choice of the user on the second menu
-    }
 
     public static void thirdMenu(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){ //deals with the final output of this series of choices
         int finalCalcVal = 0;
         int[] finalValArr = new int[2];
         int[] otherFinalValArr = new int [4];
         switch(pInput){ //i have two separate switch cases so that in the first, i can address multiple outcomes as a whole. whereas in the second switch case, i then address each individually
-            case 1: case 2: case 3: case 4: //if any of the first four options on second menu
-                //finalCalcVal = firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray);
-            break;
             case 5: case 6: case 7:
-                //finalValArr[1] = firstFourMenuCalcs(1, pInputString, pCovidRecordArray);
                 finalValArr[1] = cumPos(pInputString, pCovidRecordArray);
-                //finalValArr = nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray); //the same. run the method first then change the variable being printed if wanting to print an entered country or date
+            break;
+            default:
+
             break;
         }
 
@@ -216,20 +217,20 @@ public class UserInterface{
                 printEnding();  
             break;
             case 5:
-                finalValArr[0] = firstFourMenuCalcs(3, pInputString, pCovidRecordArray);
+                finalValArr[0] = cumRec(pInputString, pCovidRecordArray);
                 System.out.println("Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"); //I CALCULATE PERCENTAGE HERE SO THAT I CAN HAVE FIRST VALUE AS AN INTEGER FOR FIRST "NUMBER PART OF PRINT" AND THEN CAN CHANGE IT TO A PERCENTAGE (double) AFTERWARDS.
                 printEnding();
             break;
             case 6:
-                finalValArr[0] = firstFourMenuCalcs(2, pInputString, pCovidRecordArray);
+                finalValArr[0] = cumDec(pInputString, pCovidRecordArray);
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%");
                 printEnding();                
             break;
             case 7: //this essentially runs all the other options in one go
                 otherFinalValArr[0] = finalValArr[1];
-                otherFinalValArr[1] = firstFourMenuCalcs(2, pInputString, pCovidRecordArray);
-                otherFinalValArr[2] = firstFourMenuCalcs(3, pInputString, pCovidRecordArray);
-                otherFinalValArr[3] = firstFourMenuCalcs(4, pInputString, pCovidRecordArray);
+                otherFinalValArr[1] = cumDec(pInputString, pCovidRecordArray);
+                otherFinalValArr[2] = cumRec(pInputString, pCovidRecordArray);
+                otherFinalValArr[3] = currPos(pInputString, pCovidRecordArray);
                 System.out.println("Cumulative number of positive cases in " + pInputString + ": " + otherFinalValArr[0]);
                 System.out.println("Cumulative number of deceased cases in " + pInputString + ": " + otherFinalValArr[1]);
                 System.out.println("Cumulative number of recovered cases in " + pInputString + ": " + otherFinalValArr[2]);
@@ -238,8 +239,6 @@ public class UserInterface{
                 System.out.println("Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + otherFinalValArr[1] + " = " + (((double) otherFinalValArr[1] / (double) otherFinalValArr[0]) * 100) + "%");
                 printEnding();
             break;
-
-
 
         }
         
@@ -252,94 +251,19 @@ public class UserInterface{
     }       
 
 
-    public static int firstFourMenuCalcs(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
-        int totalReturnVal = 0;
-        int ticker = 0;
-        
-        boolean notall = false;
-        switch(pInputString){ 
-            case "All countries":
-
-            break;
-            default:
-                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
-            break;
-        }
-
-        switch(pInput){
-            case 1:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCumulativePositive(); //Does it for all possible options
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if notall is true(not "All countries" so checking for something specific) and its doesnt match any given country, continent or date then it must not be what we're looking for
-                            x = 0; //negate this entry if so
-                        }
-                        totalReturnVal += x;
-                    }
-                }
-            break;
-            case 2:
-            for(int i = 0; i < pCovidRecordArray.length; i++){
-                if(pCovidRecordArray[i] != null){
-                    int x = pCovidRecordArray[i].getCumulativeDeceased();
-                    if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                        x = 0;
-                    }
-                    totalReturnVal += x;
-                }
-            }
-            break;
-            case 3:
-            for(int i = 0; i < pCovidRecordArray.length; i++){
-                if(pCovidRecordArray[i] != null){
-                    int x = pCovidRecordArray[i].getCumulativeRecovered();
-                    if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                        x = 0;
-                    }
-                    totalReturnVal += x;
-                }
-            }
-            break;
-            case 4:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        int x = pCovidRecordArray[i].getCurrentlyPositive();
-                        ticker ++;
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                            x = 0;
-                            ticker --; //additional negate needed so that the counter only ticks up on valid lines
-                        }
-                        totalReturnVal += x;
-                    }
-                }
-                totalReturnVal = totalReturnVal / ticker; //to get average
-            break;
-            default:
-
-            break;
-        }
-        return totalReturnVal;
-    }
-
-
-
     public static int cumPos(String pInputString, CovidRecord[] pCovidRecordArray){
         int totalReturnVal = 0;
         
         boolean notall = false;
-        switch(pInputString){ 
-            case "All countries":
-
-            break;
-            default:
-                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
-            break;
+        
+        if(!(pInputString.equals("All countries"))){
+            notall = true;
         }
 
         for(int i = 0; i < pCovidRecordArray.length; i++){
             if(pCovidRecordArray[i] != null){
                 int x = pCovidRecordArray[i].getCumulativePositive(); //Does it for all possible options
-                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if notall is true(not "All countries" so checking for something specific) and its doesnt match any given country, continent or date then it must not be what we're looking for
+                if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) && !(pCovidRecordArray[i].getDate().equals(pInputString)) && !(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){ //if notall is true(not "All countries", so checking for something specific) and its doesnt match any given country, continent or date then it must not be what we're looking for
                     x = 0; //negate this entry if so
                 }
                 totalReturnVal += x;
@@ -353,13 +277,8 @@ public class UserInterface{
         int totalReturnVal = 0;
         
         boolean notall = false;
-        switch(pInputString){ 
-            case "All countries":
-
-            break;
-            default:
-                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
-            break;
+        if(!(pInputString.equals("All countries"))){
+            notall = true;
         }
 
         for(int i = 0; i < pCovidRecordArray.length; i++){
@@ -379,13 +298,8 @@ public class UserInterface{
         int totalReturnVal = 0;
         
         boolean notall = false;
-        switch(pInputString){ 
-            case "All countries":
-
-            break;
-            default:
-                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
-            break;
+        if(!(pInputString.equals("All countries"))){
+            notall = true;
         }
 
         for(int i = 0; i < pCovidRecordArray.length; i++){
@@ -406,13 +320,8 @@ public class UserInterface{
         int ticker = 0;
 
         boolean notall = false;
-        switch(pInputString){ 
-            case "All countries":
-
-            break;
-            default:
-                notall = true; //notall if a boolean checker to check if the user did not input "All countries"
-            break;
+        if(!(pInputString.equals("All countries"))){
+            notall = true;
         }
 
         for(int i = 0; i < pCovidRecordArray.length; i++){

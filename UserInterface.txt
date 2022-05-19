@@ -1,86 +1,5 @@
 
-
 //make a comment in actual code about how you do line = readline twice to skip first line (in readFile)
-
-//LASTMENU CALC IS REDUNDANT, JUST CALL FIRSTFOURMENUCALCS IN THIRDMENU FOR EACH OF THOSE DESIRED VALUES, REMOVE LASTMENUCALC
-
-
-
-
-
-
-
-
-
-
-FOR FILE WRITING{
-    i assume we are meant to do something like write all the south america countries, north american countries 
-    to individual separate files and then when i need to address those countries i just loop through their files
-    instead of checking through the og file everytime
-}
-
-
-
-
-
-create countries{
-    make an empty array 
-    in a loop, update a variable with the next line of data, add that variable to the array
-    eventually u have an array full of these countries
-}
-create covidrecords with countries{
-    do same as countries with added pcountry being countryArrayList[i] in your loop
-
-}
-
-
-for continent selection{
-    so theyve picked their continent
-    then for either of the first 3 options ("totals"){
-        for recordArrayList.length
-            if recordArrayList[i].getContinent.equals(user inputted continent)
-                totalValueHolder += recordArrayList[i].getTotalofthing
-
-        print totalValueHolder
-    
-
-    }
-}
-
-
-
-
-switch(pInputString){
-            case "All countries":
-
-            break;
-            case "Enter a Country":
-                notall = true;
-            break;
-                notall = true;
-            default:
-                notall = true;
-            break;
-        }
-
-        switch(pInput){
-            case 1:
-                for(int i = 0; i < pCovidRecordArray.length; i++){
-                    if(pCovidRecordArray[i] != null){
-                        x = pCovidRecordArray[i].getCumulativePositive();
-                        if(notall && !(pCovidRecordArray[i].getCountry().getCountryName().equals(pCaseInputString)) && !(pCovidRecordArray[i].getCountry().getDate().equals(pCaseInputString))){
-                            x = 0;
-                        }
-                        totalReturnVal += x;
-                    }
-                }
-
-
-
-
-
-
-
 
 import packages
 
@@ -173,6 +92,24 @@ public class UserInterface{
         close scanner
     
 
+
+        function = "secondMenu" , with parameters(Scanner pSc) and returns an integer{
+
+        print "> 1 = Total number of cumulatively positive cases"
+        print "> 2 = Total number of cumulatively deceased cases"
+        print "> 3 = Total number of cumulatively recovered cases"
+        print "> 4 = Average daily number of currently positive cases"
+        print "> 5 = Number and percentage of cumulatively positive cases recovered"
+        print "> 6 = Number and percentage of cumulatively positive cases deceased"
+        print "> 7 = All of the above statistics");
+
+        input2 equals the next integer read by the scanner
+
+        return input2
+    }
+
+
+
     function = "readFile" , with parameters (String pFileName) and returns a CovidRecord array{
         create new fileStream
         create new InputStreamReader (rdr)
@@ -241,69 +178,62 @@ public class UserInterface{
         return splitLine
         }
 
-    function = "secondMenu" , with parameters(Scanner pSc) and returns an integer{
 
-        print "> 1 = Total number of cumulatively positive cases"
-        print "> 2 = Total number of cumulatively deceased cases"
-        print "> 3 = Total number of cumulatively recovered cases"
-        print "> 4 = Average daily number of currently positive cases"
-        print "> 5 = Number and percentage of cumulatively positive cases recovered"
-        print "> 6 = Number and percentage of cumulatively positive cases deceased"
-        print "> 7 = All of the above statistics");
-
-        input2 equals the next integer read by the scanner
-
-        return input2
-    }
 
 
     function = "thirdMenu" with parameters(int pInput, String pInputString, CovidRecord[] pCovidRecordArray){
         finalCalcVal EQUALS TO 0
         finalValArr EQUALS TO an integer array of size 2
-        otherFinalValArr EQUALS to an integer array of size 3
+        otherFinalValArr EQUALS to an integer array of size 4
         switch(pInput){ 
-            case 1: case 2: case 3: case 4:
-                finalCalcVal EQUALS TO firstFourMenuCalcs(pInput, pInputString, pCovidRecordArray)
-            break
             case 5: case 6: 
-                finalValArr EQUALS TO nextTwoMenuCalcs(pInput, pInputString, pCovidRecordArray)
+                finalValArr[1] EQUALS TO cumPos(pInputString, pCovidRecordArray)
             break
         }
 
         switch(pInput){
             case 1:
+                finalCalcVal EQUALS TO cumPos(pInputString, pCovidRecordArray)
                 print "Cumulative number of positive cases in " + pInputString + ": " + finalCalcVal
                 printEnding()
             break
             case 2:
+                finalCalcVal EQUALS TO cumDec(pInputString, pCovidRecordArray)
                 print "Cumulative number of deceased cases in " + pInputString + ": " + finalCalcVal
                 printEnding()
             break
             case 3:
+                finalCalcVal EQUALS TO cumRec(pInputString, pCovidRecordArray)
                 print "Cumulative number of recovered cases in " + pInputString + ": " + finalCalcVal
                 printEnding()
             break
             case 4:
+                finalCalcVal EQUALS TO currPos(pInputString, pCovidRecordArray)
                 print "Average daily number of currently positive cases in " + pInputString + ": " + finalCalcVal
                 printEnding()
             break
             case 5:
+                finalValArr[0] EQUALS TO cumRec(pInputString, pCovidRecordArray)
                 print "Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"
                 printEnding()
             break
             case 6:
+                finalValArr[0] EQUALS TO cumDec(pInputString, pCovidRecordArray)
                 print "Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + finalValArr[0] + " = " + (((double) finalValArr[0] / (double) finalValArr[1]) * 100) + "%"
                 printEnding()              
             break
             case 7: 
-                otherFinalValArr EQUALS TO lastMenuCalc(pInputString, pCovidRecordArray);
+                otherFinalValArr[0] EQUALS TO finalValArr[1]
+                otherFinalValArr[1] EQUALS TO cumDec(pInputString, pCovidRecordArray)
+                otherFinalValArr[2] EQUALS TO cumRec(pInputString, pCovidRecordArray)
+                otherFinalValArr[3] EQUALS TO currPos(pInputString, pCovidRecordArray)
                 print "Cumulative number of positive cases in " + pInputString + ": " + otherFinalValArr[0]
                 print "Cumulative number of deceased cases in " + pInputString + ": " + otherFinalValArr[1]
                 print "Cumulative number of recovered cases in " + pInputString + ": " + otherFinalValArr[2]
                 print "Average daily number of currently positive cases in " + pInputString + ": " + otherFinalValArr[3]
                 print "Number and percentage of cumulatively positive cases recovered in " + pInputString + ": " + otherFinalValArr[2] + " = " + (((double) otherFinalValArr[2] / (double) otherFinalValArr[0]) * 100) + "%"
                 print "Number and percentage of cumulatively positive cases deceased in " + pInputString + ": " + otherFinalValArr[1] + " = " + (((double) otherFinalValArr[1] / (double) otherFinalValArr[0]) * 100) + "%"
-                printEnding();
+                printEnding()
             break
 
 
@@ -319,76 +249,101 @@ public class UserInterface{
     }       
 
 
-    function = "firstFourMenuCalcs" with parameters(int pInput, String pInputString, CovidRecord[] pCovidRecordArray) and returns an integer{
-        totalReturnVal EQUALS TO 0
-        ticker EQUALS TO 0
+    public static int cumPos(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal EQUALS TO 0
         
-        notall EQUALS TO false
-        switch(pInputString){ 
-            case "All countries":
-
-            break
-            default:
-                notall EQUALS TO true
-            break
+        boolean notall EQUALS TO false
+        
+        if(pInputString DOES NOT EQUAL to "All countries"){
+            notall EQUALS TO true;
         }
 
-        switch(pInput){
-            case 1:
-                for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
-                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
-                        x EQUALS TO pCovidRecordArray[i].getCumulativePositive()
-                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                            x EQUALS TO 0
-                        }
-                        add x to totalReturnVal
-                    }
+        for i EQUALS zero, i LESS THAN pCovidRecordArray length, i increments by +1{
+            if(pCovidRecordArray[i] DOES NOT EQUAL null){
+                x = pCovidRecordArray[i].getCumulativePositive()
+                if(notall is TRUE AND (pCovidRecordArray[i]'s country name DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s date DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s continent DOES NOT EQUAL pInputString){
+                    x EQUALS zero;
                 }
-            break;
-            case 2:
-            for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
-                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
-                        x EQUALS TO pCovidRecordArray[i].getCumulativeDeceased()
-                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                            x EQUALS TO 0
-                        }
-                        add x to totalReturnVal
-                    }
-                }
-            break;
-            case 3:
-            for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
-                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
-                        x EQUALS TO pCovidRecordArray[i].getCumulativeRecovered()
-                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                            x EQUALS TO 0
-                        }
-                        add x to totalReturnVal
-                    }
-                }
-            break
-            case 4:
-                for i EQUALS TO 0, i LESS THAN pCovidRecordArray length, i increments by 1{
-                    if pCovidRecordArray[i] DOES NOT EQUAL TO null {
-                        x EQUALS TO pCovidRecordArray[i].getCurrentlyPositive()
-                        add +1 to ticker
-                        if notall AND NOT(pCovidRecordArray[i].getCountry().getCountryName().equals(pInputString)) AND NOT(pCovidRecordArray[i].getDate().equals(pInputString)) AND NOT(pCovidRecordArray[i].getCountry().getContinent().equals(pInputString))){
-                            x EQUALS TO 0
-                            subtract +1 from ticker
-                        }
-                        add x to totalReturnVal
-                    }
-                }
-                totalReturnVal EQUALS TO totalReturnVal divided by ticker
-            break
-            default:
-
-            break
+                add x to totalReturnVal
+            }
         }
         return totalReturnVal
+        
+    }
+
+    public static int cumDec(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal EQUALS TO 0
+        
+        boolean notall EQUALS TO false
+        
+        if(pInputString DOES NOT EQUAL to "All countries"){
+            notall EQUALS TO true;
+        }
+
+        for i EQUALS zero, i LESS THAN pCovidRecordArray length, i increments by +1{
+            if(pCovidRecordArray[i] DOES NOT EQUAL null){
+                x = pCovidRecordArray[i].getCumulativeDeceased()
+                if(notall is TRUE AND (pCovidRecordArray[i]'s country name DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s date DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s continent DOES NOT EQUAL pInputString){
+                    x EQUALS zero;
+                }
+                add x to totalReturnVal
+            }
+        }
+        return totalReturnVal
+        
+    }
+
+    public static int cumRec(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal EQUALS TO 0
+        
+        boolean notall EQUALS TO false
+        
+        if(pInputString DOES NOT EQUAL to "All countries"){
+            notall EQUALS TO true;
+        }
+
+        for i EQUALS zero, i LESS THAN pCovidRecordArray length, i increments by +1{
+            if(pCovidRecordArray[i] DOES NOT EQUAL null){
+                x = pCovidRecordArray[i].getCumulativeRecovered()
+                if(notall is TRUE AND (pCovidRecordArray[i]'s country name DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s date DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s continent DOES NOT EQUAL pInputString){
+                    x EQUALS zero;
+                }
+                add x to totalReturnVal
+            }
+        }
+        return totalReturnVal
+        
+    }
+
+    public static int currPos(String pInputString, CovidRecord[] pCovidRecordArray){
+        int totalReturnVal EQUALS TO 0
+        
+        boolean notall EQUALS TO false
+        
+        if(pInputString DOES NOT EQUAL to "All countries"){
+            notall EQUALS TO true;
+        }
+
+        for i EQUALS zero, i LESS THAN pCovidRecordArray length, i increments by +1{
+            if(pCovidRecordArray[i] DOES NOT EQUAL null){
+                x = pCovidRecordArray[i].getCumulativePositive()
+                increment ticker by +1
+                if(notall is TRUE AND (pCovidRecordArray[i]'s country name DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s date DOES NOT EQUAL pInputString) AND (pCovidRecordArray[i]'s continent DOES NOT EQUAL pInputString){
+                    x EQUALS zero;
+                    decrement ticker by +1;
+                }
+                add x to totalReturnVal
+            }
+        }
+        totalReturnVal EQUALS TO totalReturnVal divided by ticker
+
+        return totalReturnVal
+        
     }
 
 
+
+Country CLASS
 
 import packages
 
@@ -436,6 +391,10 @@ public class Country {
     }
 
 }
+
+
+
+CovidRecord CLASS
 
 
 import packages
